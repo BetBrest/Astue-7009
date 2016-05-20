@@ -11,8 +11,8 @@
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) Main.dfm"/>
     <LIBFILES value=""/>
-    <LIBRARIES value="CPortLibCB6.lib rtl.lib vcl.lib"/>
-    <SPARELIBS value="vcl.lib rtl.lib CPortLibCB6.lib"/>
+    <LIBRARIES value="dbrtl.lib tee.lib teedb.lib CPortLibCB6.lib rtl.lib vcl.lib"/>
+    <SPARELIBS value="vcl.lib rtl.lib CPortLibCB6.lib teedb.lib tee.lib dbrtl.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi teeui.bpi 
       teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
