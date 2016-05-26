@@ -47,13 +47,52 @@ __published:	// IDE-managed Components
         TMenuItem *N8;
         TButton *Button3;
         TValueListEditor *ValueListEditor1;
+        TEdit *Edit1;
+        TLabel *Label2;
+        TButton *Button4;
         void __fastcall N4Click(TObject *Sender);
         void __fastcall TreeView1Click(TObject *Sender);
         void __fastcall N6Click(TObject *Sender);
         void __fastcall N8Click(TObject *Sender);
         void __fastcall Button3Click(TObject *Sender);
+        void __fastcall FormCreate(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
+
+struct set_stable_constants_t  //  36 байт
+{							   ////константы на время жизни счетчика
+   unsigned char DeviceType[8];	       //  тип прибора  +3
+   unsigned long SerialNumber;           //  заводской номер  +6
+   unsigned char DateRelise[7];	       //  дата выпуска
+   unsigned long CrystalFric;			   //  частота кварцевого резонатора *10
+   unsigned char GUID[8];                //  guid счетчика
+   unsigned char Reserved[5];            //  резерв
+};
+struct set_stable_constants_T  //  37 байт
+{							   ////константы на время жизни счетчика
+   unsigned char DeviceType[8];	       //  тип прибора  +3
+   unsigned char ZavNum[4];              //  заводской номер  +6
+   unsigned char DateRelise[7];	       //  дата выпуска
+   unsigned char CrystalFric[4];	       //  частота кварцевого резонатора *10
+   unsigned char GUID[8];                //  guid счетчика
+   unsigned char Reserved[6];            //  резерв
+};
+
+
+ struct My_Meter
+{
+   unsigned char NetAdres[2];           //  заводской номер  +2
+   unsigned char SpeedRS485;	       //  Скорость подключения
+//   unsigned char Ktvolt[2];		   //  U16 коэфициэнт трансформации напряжения
+ //  unsigned char Ktamper[2];		   //  U16 коэффициэнт трансформации тока
+ //  unsigned char IndexTree[2];             //
+  // My_Meter(unsigned char s1[2] ,unsigned char s2 );
+}  Meter[2];
+// My_Meter;//={{{52,0x00},2,{0x01,0},{0x01,0},{0x02,0}},
+                   // {{76,0x00},2,{0x01,0},{0x01,0},{0x03,0}}};
+
+
+
         __fastcall TForm1(TComponent* Owner);
 };
 //---------------------------------------------------------------------------

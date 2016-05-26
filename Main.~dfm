@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 319
-  Top = 210
+  Left = 345
+  Top = 66
   Width = 1135
-  Height = 506
+  Height = 689
   Caption = #1040#1057#1058#1059#1069'('#1057#1069#1058'7009) '#1054#1040#1054' "'#1041#1069#1052#1047'"'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -12,6 +12,7 @@ object Form1: TForm1
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -28,7 +29,9 @@ object Form1: TForm1
     Height = 361
     Indent = 19
     PopupMenu = PopupMenu1
+    ReadOnly = True
     TabOrder = 0
+    OnClick = TreeView1Click
     Items.Data = {
       01000000280000000000000000000000FFFFFFFFFFFFFFFF0000000001000000
       0FC0D1D2D3DD20CEC0CE22C1DDCCC722310000000000000000000000FFFFFFFF
@@ -41,7 +44,7 @@ object Form1: TForm1
     Left = 248
     Top = 48
     Width = 841
-    Height = 369
+    Height = 393
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 1
@@ -70,6 +73,72 @@ object Form1: TForm1
     object TabSheet4: TTabSheet
       Caption = #1056#1072#1089#1089#1095#1077#1090' '#1088#1072#1089#1093#1086#1076#1072
       ImageIndex = 3
+    end
+    object TabSheet5: TTabSheet
+      Caption = #1057#1095#1077#1090#1095#1080#1082
+      ImageIndex = 4
+      object Label2: TLabel
+        Left = 80
+        Top = 16
+        Width = 119
+        Height = 20
+        Caption = #1057#1077#1090#1077#1074#1086#1081' '#1072#1076#1088#1077#1089':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Button3: TButton
+        Left = 648
+        Top = 328
+        Width = 123
+        Height = 25
+        Caption = #1057#1095#1080#1090#1072#1090#1100' '#1080#1085#1092#1086#1088#1084#1072#1094#1080#1102
+        TabOrder = 0
+        OnClick = Button3Click
+      end
+      object ValueListEditor1: TValueListEditor
+        Left = 42
+        Top = 40
+        Width = 735
+        Height = 276
+        KeyOptions = [keyEdit]
+        Strings.Strings = (
+          #1058#1080#1087' '#1087#1088#1080#1073#1086#1088#1072' ='
+          #1047#1072#1074#1086#1076#1089#1082#1086#1081' '#1085#1086#1084#1077#1088'='
+          #1042#1077#1088#1089#1080#1103' '#1087#1088#1086#1090#1086#1082#1086#1083#1072' '#1086#1073#1084#1077#1085#1072'='
+          #1042#1077#1088#1089#1080#1103' '#1087#1088#1086#1096#1080#1074#1082#1080' '#1089#1095#1077#1090#1095#1080#1082#1072'='
+          #1044#1072#1090#1072' '#1074#1099#1087#1091#1089#1082#1072'='
+          #1057#1095#1077#1090#1095#1080#1082' '#1087#1077#1088#1077#1079#1072#1075#1088#1091#1079#1086#1082'='
+          #1057#1095#1077#1090#1095#1080#1082' WDT='
+          #1057#1095#1077#1090#1095#1080#1082' '#1086#1096#1080#1073#1086#1082'='
+          #1053#1072#1087#1088#1103#1078#1077#1085#1080#1077' '#1085#1072' '#1073#1072#1090#1072#1088#1077#1077'='
+          #1042#1088#1077#1084#1103' '#1088#1072#1073#1086#1090#1099' '#1074' '#1095#1072#1089#1072#1093'=')
+        TabOrder = 1
+        TitleCaptions.Strings = (
+          #1055#1072#1088#1072#1084#1077#1090#1088
+          #1047#1085#1072#1095#1077#1085#1080#1077)
+        ColWidths = (
+          160
+          569)
+      end
+      object Edit1: TEdit
+        Left = 216
+        Top = 16
+        Width = 121
+        Height = 21
+        TabOrder = 2
+      end
+      object Button4: TButton
+        Left = 351
+        Top = 13
+        Width = 75
+        Height = 25
+        Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+        TabOrder = 3
+      end
     end
   end
   object Button1: TButton
@@ -101,6 +170,15 @@ object Form1: TForm1
     Height = 25
     Caption = #1055#1088#1086#1074#1077#1088#1082#1072' '#1089#1074#1103#1079#1080
     TabOrder = 4
+  end
+  object RichEdit1: TRichEdit
+    Left = 192
+    Top = 448
+    Width = 185
+    Height = 89
+    Lines.Strings = (
+      'RichEdit1')
+    TabOrder = 5
   end
   object MainMenu1: TMainMenu
     Left = 16
@@ -145,9 +223,14 @@ object Form1: TForm1
     end
     object N6: TMenuItem
       Caption = #1059#1076#1072#1083#1080#1090#1100' '
+      OnClick = N6Click
     end
     object N7: TMenuItem
       Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
+    end
+    object N8: TMenuItem
+      Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103
+      OnClick = N8Click
     end
   end
 end

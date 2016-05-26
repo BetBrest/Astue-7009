@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 390
-  Top = 159
+  Left = 345
+  Top = 66
   Width = 1135
   Height = 689
   Caption = #1040#1057#1058#1059#1069'('#1057#1069#1058'7009) '#1054#1040#1054' "'#1041#1069#1052#1047'"'
@@ -12,6 +12,7 @@ object Form1: TForm1
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
@@ -44,8 +45,8 @@ object Form1: TForm1
     Top = 48
     Width = 841
     Height = 393
-    ActivePage = TabSheet5
-    TabIndex = 4
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #1047#1072' '#1084#1077#1089#1103#1094' '#1087#1086' '#1076#1085#1103#1084
@@ -76,6 +77,19 @@ object Form1: TForm1
     object TabSheet5: TTabSheet
       Caption = #1057#1095#1077#1090#1095#1080#1082
       ImageIndex = 4
+      object Label2: TLabel
+        Left = 80
+        Top = 16
+        Width = 119
+        Height = 20
+        Caption = #1057#1077#1090#1077#1074#1086#1081' '#1072#1076#1088#1077#1089':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
       object Button3: TButton
         Left = 648
         Top = 328
@@ -109,6 +123,21 @@ object Form1: TForm1
         ColWidths = (
           160
           569)
+      end
+      object Edit1: TEdit
+        Left = 216
+        Top = 16
+        Width = 121
+        Height = 21
+        TabOrder = 2
+      end
+      object Button4: TButton
+        Left = 351
+        Top = 13
+        Width = 75
+        Height = 25
+        Caption = #1048#1079#1084#1077#1085#1080#1090#1100
+        TabOrder = 3
       end
     end
   end
