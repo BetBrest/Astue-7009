@@ -79,14 +79,20 @@ struct set_stable_constants_T  //  37 байт
 };
 
 
-struct My_Meter
+ struct My_Meter
 {
    unsigned char NetAdres[2];           //  заводской номер  +2
-   unsigned char SpeedRS485;	       //  дата выпуска
-   unsigned char Ktvolt[2];		   //  U16 коэфициэнт трансформации напряжения
-   unsigned char Ktamper[2];		   //  U16 коэффициэнт трансформации тока
-   unsigned char IndexTree[2];
-};
+   unsigned char SpeedRS485;	       //  Скорость подключения
+//   unsigned char Ktvolt[2];		   //  U16 коэфициэнт трансформации напряжения
+ //  unsigned char Ktamper[2];		   //  U16 коэффициэнт трансформации тока
+ //  unsigned char IndexTree[2];             //
+  // My_Meter(unsigned char s1[2] ,unsigned char s2 );
+}  Meter[2];
+// My_Meter;//={{{52,0x00},2,{0x01,0},{0x01,0},{0x02,0}},
+                   // {{76,0x00},2,{0x01,0},{0x01,0},{0x03,0}}};
+
+
+
         __fastcall TForm1(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
