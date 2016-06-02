@@ -4,12 +4,12 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="ASTUE_BEMZ.exe"/>
-    <OBJFILES value="ASTUE_BEMZ.obj Main.obj"/>
+    <OBJFILES value="ASTUE_BEMZ.obj Main.obj About_program.obj"/>
     <RESFILES value="ASTUE_BEMZ.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) Main.dfm"/>
+    <RESDEPEN value="$(RESFILES) Main.dfm About_program.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="dbrtl.lib tee.lib teedb.lib CPortLibCB6.lib rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib CPortLibCB6.lib teedb.lib tee.lib dbrtl.lib"/>
@@ -57,6 +57,7 @@
       <FILE FILENAME="ASTUE_BEMZ.res" FORMNAME="" UNITNAME="ASTUE_BEMZ.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ASTUE_BEMZ.cpp" FORMNAME="" UNITNAME="ASTUE_BEMZ" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Main.cpp" FORMNAME="Form1" UNITNAME="Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="About_program.cpp" FORMNAME="Form2" UNITNAME="About_program" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

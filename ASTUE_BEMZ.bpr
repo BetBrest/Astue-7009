@@ -30,15 +30,17 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="_RTLDLL;NO_STRICT"/>
     <MAINSOURCE value="ASTUE_BEMZ.cpp"/>
-    <INCLUDEPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;D:\GIT\Astue-7009;$(BCB)\include;$(BCB)\include\vcl;&quot;C:\Program Files\Borland\CBuilder6\сport&quot;"/>
-    <LIBPATH value="$(BCB)\Projects\Lib;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;&quot;C:\Program Files\Borland\CBuilder6\сport&quot;"/>
+    <INCLUDEPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;D:\GIT\Astue-7009;$(BCB)\include;$(BCB)\include\vcl;&quot;C:\Program Files\Borland\CBuilder6\сport&quot;;&quot;C:\Program Files (x86)\Borland\CBuilder6\CPORT&quot;"/>
+    <LIBPATH value="$(BCB)\Projects\Lib;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;&quot;C:\Program Files\Borland\CBuilder6\сport&quot;;&quot;C:\Program Files (x86)\Borland\CBuilder6\CPORT&quot;"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -ID:\GIT\Astue-7009 
       -I$(BCB)\include -I$(BCB)\include\vcl 
-      -I&quot;C:\Program Files\Borland\CBuilder6\сport&quot; -src_suffix cpp -D_DEBUG -boa"/>
+      -I&quot;C:\Program Files\Borland\CBuilder6\сport&quot; 
+      -I&quot;C:\Program Files (x86)\Borland\CBuilder6\CPORT&quot; -src_suffix cpp 
+      -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
       -tW -tWM"/>
     <PFLAGS value="-$YD -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -91,18 +93,20 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=3
-Item0=C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\сport
-Item1=C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\include;$(BCB)\include\vcl
-Item2=$(BCB)\include;$(BCB)\include\vcl
+Count=4
+Item0=C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\сport;C:\Program Files (x86)\Borland\CBuilder6\CPORT
+Item1=C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\include;$(BCB)\include\vcl;C:\Program Files\Borland\CBuilder6\сport
+Item2=C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\include;$(BCB)\include\vcl
+Item3=$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=5
-Item0=$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files\Borland\CBuilder6\сport
-Item1=$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files\Borland\CBuilder6\Source\cport;C:\Program Files\Borland\CBuilder6\сport
-Item2=$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files\Borland\CBuilder6\Source\cport
-Item3=$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files\Borland\CBuilder6\Source\cport
-Item4=$(BCB)\lib\obj;$(BCB)\lib
+Count=6
+Item0=$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files\Borland\CBuilder6\сport;C:\Program Files (x86)\Borland\CBuilder6\CPORT
+Item1=$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files\Borland\CBuilder6\сport
+Item2=$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files\Borland\CBuilder6\Source\cport;C:\Program Files\Borland\CBuilder6\сport
+Item3=$(BCB)\Projects\Lib;C:\Program Files\Borland\CBuilder6\Projects;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files\Borland\CBuilder6\Source\cport
+Item4=$(BCB)\lib\obj;$(BCB)\lib;C:\Program Files\Borland\CBuilder6\Source\cport
+Item5=$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
