@@ -56,6 +56,8 @@ __published:	// IDE-managed Components
         void __fastcall N8Click(TObject *Sender);
         void __fastcall Button3Click(TObject *Sender);
         void __fastcall FormCreate(TObject *Sender);
+        void __fastcall N2Click(TObject *Sender);
+        void __fastcall N3Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 
@@ -81,11 +83,11 @@ struct set_stable_constants_T  //  37 байт
 
  struct My_Meter
 {
-   unsigned char NetAdres[2];           //  заводской номер  +2
-   unsigned char SpeedRS485;	       //  Скорость подключения
-//   unsigned char Ktvolt[2];		   //  U16 коэфициэнт трансформации напряжения
- //  unsigned char Ktamper[2];		   //  U16 коэффициэнт трансформации тока
- //  unsigned char IndexTree[2];             //
+   unsigned int NetAdres;           //  сетевой адрес
+   unsigned int SpeedRS485;	       //  Скорость подключения
+  // unsigned char Ktvolt[2];		   //   коэфициэнт трансформации напряжения
+  // unsigned char Ktamper[2];		   //   коэффициэнт трансформации тока
+   unsigned int IndexTree;             //   индекс
   // My_Meter(unsigned char s1[2] ,unsigned char s2 );
 }  Meter[2];
 // My_Meter;//={{{52,0x00},2,{0x01,0},{0x01,0},{0x02,0}},
