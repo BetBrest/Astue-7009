@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 311
-  Top = 122
+  Left = 318
+  Top = 146
   Width = 1135
   Height = 689
   Caption = #1040#1057#1058#1059#1069'('#1057#1069#1058'7009) '#1054#1040#1054' "'#1041#1069#1052#1047'"'
@@ -187,6 +187,7 @@ object Form1: TForm1
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
       object N3: TMenuItem
         Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1072' com '#1087#1086#1088#1090#1072
+        OnClick = N3Click
       end
       object N4: TMenuItem
         Caption = #1042#1099#1093#1086#1076' '#1080#1079' '#1087#1088#1086#1075#1088#1072#1084#1084#1099
@@ -195,6 +196,7 @@ object Form1: TForm1
     end
     object N2: TMenuItem
       Caption = #1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
+      OnClick = N2Click
     end
   end
   object ComPort1: TComPort

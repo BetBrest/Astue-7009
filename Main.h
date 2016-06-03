@@ -58,6 +58,7 @@ __published:	// IDE-managed Components
         void __fastcall FormCreate(TObject *Sender);
         void __fastcall N2Click(TObject *Sender);
         void __fastcall N3Click(TObject *Sender);
+        void __fastcall Button4Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 
