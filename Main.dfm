@@ -215,6 +215,8 @@ object Form1: TForm1
     FlowControl.XonXoffIn = False
     StoredProps = [spBasic]
     TriggersOnRxChar = True
+    OnRxChar = ComPort1RxChar
+    OnRx80Full = ComPort1Rx80Full
     Left = 160
     Top = 8
   end

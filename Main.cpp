@@ -13,6 +13,13 @@ AnsiString dir = GetCurrentDir();
 
 TForm1 *Form1;
 unsigned char ReadInfo[] ={0x07, 0x34, 0x00, 0x00, 0x00, 0xBB, 0xF0 } ;
+bool new_paket=true;  //  read the new package from the port
+bool Ready_to_start=false;//flag counter ready to set the time
+
+unsigned int read_byte; // the number of bits read from comport
+unsigned char in_buffer[256], out_buffer[256],work_buffer[256];  //com buffers
+
+
 
 TIniFile *Ini = new TIniFile( dir + "/meters.ini");
 int count_meters=0;
@@ -65,7 +72,7 @@ unsigned  int  IndexTree;
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Button3Click(TObject *Sender)
 {
-  ValueListEditor1->Cells[1][1]="7009"  ;
+ // ValueListEditor1->Cells[1][1]="7009"  ;
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
  ComPort1->Open();
@@ -157,3 +164,132 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
+void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
+{
+    if (new_paket==true)
+     {
+     new_paket =false;
+     read_byte=0;
+     }
+
+     if ((read_byte+Count)>250)
+     {
+     ComPort1->ClearBuffer(true, true);
+     ShowMessage("Переполнение буффера");
+     new_paket = true;
+
+     return;
+     }
+
+     ComPort1->Read(&work_buffer[read_byte], Count);
+     read_byte+=Count;
+
+      if  ((unsigned (read_byte)==work_buffer[0])&&(read_byte>=7))
+      {
+      // ShowMessage("Пакет принят");
+        if(DecodeInBuffer())
+        {
+       //  ShowMessage("Пакет разобран");
+          read_byte=0;
+        }
+        else
+        {
+      //  ShowMessage("Пакет не разобран");
+        }
+      }
+
+    /* if(work_buffer[0]==0x55 && Ready_to_start==true) // answer on  time request to wite
+     {
+     ComPort1->ClearBuffer(true, true);
+  //   Clean_buf(work_buffer,256);
+     //  ShowMessage("Yes");
+    // Time_update=true;
+     new_paket = true;
+     Ready_to_start=false;
+   //  ComPort1->Write(WriteTime,14);
+       return;
+     }  */
+
+
+   /*  if(work_buffer[0]==0x55 && Time_update==true)  // answer on  time write request
+     {
+     ComPort1->ClearBuffer(true, true);
+     Clean_buf(work_buffer,256);
+     Time_update=false;
+     Timer2->Enabled=false;
+     ShowMessage("Время установлено!");
+      Timer1->Enabled=true;
+     new_paket = true;
+
+       return;
+     }   */
+
+   /*  if (read_byte==9)   // answer on  time read request
+     {
+     if(work_buffer[7]==0x89)
+     {
+     //ShowMessage("Пакет  принят 89");
+      if(MakeCRC(work_buffer,8)==work_buffer[8])
+        {
+         //ShowMessage(MakeCRC(work_buffer,8));
+         memcpy(&in_buffer[0],&work_buffer[0],read_byte);
+         packet_parsing(&in_buffer[0],read_byte);
+         Timer2->Enabled=false;
+         new_paket =true;
+         }
+        else  ShowMessage("Неправильная контрольная сумма пакета");
+      }
+      else ShowMessage("Неправильный формат пакета");
+
+     }
+
+     */
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::ComPort1Rx80Full(TObject *Sender)
+{
+ ComPort1->ClearBuffer(true, true);
+}
+//---------------------------------------------------------------------------
+
+
+unsigned short TForm1::CRC16b(unsigned char *msg, int len)
+{
+    int i,j;
+  unsigned char bute,check_flag;
+  unsigned short CRC=0;
+
+  for (j=0;j<len;j++)
+  {
+   bute=msg[j];
+   for (i=0;i<8;i++)
+   {
+    check_flag=((bute^CRC)&0x01);
+    CRC>>=1;
+    bute>>=1;
+    if (check_flag==1)CRC^=0xA001;
+   }
+  }
+  return CRC;
+
+}
+
+bool TForm1::DecodeInBuffer()
+{
+  //  Check CRC
+  if (!CRC16b(&work_buffer[0],work_buffer[0]))  ;
+  else
+  {
+   ShowMessage("Ошибка контрольной суммы!!!");
+   return false;
+  }
+
+  // ShowMessage("CRC in buuifer =" + IntToStr(work_buffer[read_byte-2]) + " " + IntToStr(work_buffer[read_byte-1]))  ;
+  // ShowMessage("CRC after function  =" + IntToStr(CRC16b(&work_buffer[0],work_buffer[0])))  ;
+
+  //
+
+   return true;    //TODO: Add your source code here
+}

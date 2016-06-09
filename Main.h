@@ -59,6 +59,8 @@ __published:	// IDE-managed Components
         void __fastcall N2Click(TObject *Sender);
         void __fastcall N3Click(TObject *Sender);
         void __fastcall Button4Click(TObject *Sender);
+        void __fastcall ComPort1RxChar(TObject *Sender, int Count);
+        void __fastcall ComPort1Rx80Full(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 
@@ -97,6 +99,9 @@ struct set_stable_constants_T  //  37 байт
 
 
         __fastcall TForm1(TComponent* Owner);
+        unsigned short CRC16b(unsigned char *, int);   //   Chek sum
+
+        bool DecodeInBuffer();   //   true - if decode is right, else - false
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;
