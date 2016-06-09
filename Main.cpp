@@ -55,20 +55,17 @@ TreeView1->Selected->Delete() ;
 //---------------------------------------------------------------------------
 void __fastcall TForm1::N8Click(TObject *Sender)
 {
-unsigned  int  IndexTree;
-  PageControl1->ActivePage= TabSheet5 ;
 
-   IndexTree= TreeView1->Selected->AbsoluteIndex;
- for(int i=0; i< count_meters ;i++)
- { if(IndexTree == Meter[i].IndexTree)
-     Edit1->Text= IntToStr(Meter[i].NetAdres);
-      //ShowMessage("Win" + IntToStr(Meter[i].NetAdres));
-      //  ShowMessage(IntToStr( ((Meter[0].NetAdres[1]&0x3f)<<8) + Meter[0].NetAdres[0] ));
-
- }
-
-
+     if (GetCurrentNA())
+     {
+      PageControl1->ActivePage= TabSheet5 ;
+      Edit1->Text= IntToStr(GetCurrentNA());
+     }
+     else
+     ShowMessage("Для получения инорфмации выберите счетчик !");
+      
 }
+
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Button3Click(TObject *Sender)
 {
@@ -195,6 +192,7 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
         else
         {
       //  ShowMessage("Пакет не разобран");
+        read_byte=0;
         }
       }
 
@@ -289,7 +287,36 @@ bool TForm1::DecodeInBuffer()
   // ShowMessage("CRC in buuifer =" + IntToStr(work_buffer[read_byte-2]) + " " + IntToStr(work_buffer[read_byte-1]))  ;
   // ShowMessage("CRC after function  =" + IntToStr(CRC16b(&work_buffer[0],work_buffer[0])))  ;
 
-  //
+  // Chek Net Adress
+//Read Net Adress from Form1
 
-   return true;    //TODO: Add your source code here
+
+ //  (GetCurrentNA());
+
+//Read Net Adress from Packet
+ // ShowMessage (IntToStr(((work_buffer[2]&0x3f)<<8) + work_buffer[1] ))    ;
+
+  if (GetCurrentNA()==(((work_buffer[2]&0x3f)<<8) + work_buffer[1] ))
+  {
+     ValueListEditor1->Cells[1][11]=IntToStr(((work_buffer[2]&0x3f)<<8) + work_buffer[1] )  ;
+   }
+     else
+  {
+   ShowMessage("Не правильный сетевой адрес!!");
+   return false;
+  }
+
+
+   return true;
+}
+
+unsigned int TForm1::GetCurrentNA()
+{
+unsigned  int  IndexTree;
+IndexTree= TreeView1->Selected->AbsoluteIndex;
+ for(int i=0; i< count_meters ;i++)
+ { if(IndexTree == Meter[i].IndexTree)
+    return Meter[i].NetAdres;
+ }
+ return 0;
 }

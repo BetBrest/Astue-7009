@@ -101,7 +101,8 @@ struct set_stable_constants_T  //  37 байт
         __fastcall TForm1(TComponent* Owner);
         unsigned short CRC16b(unsigned char *, int);   //   Chek sum
 
-        bool DecodeInBuffer();   //   true - if decode is right, else - false
+        bool DecodeInBuffer();
+        unsigned int GetCurrentNA();   //   true - if decode is right, else - false
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

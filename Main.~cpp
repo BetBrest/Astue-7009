@@ -186,14 +186,16 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
 
       if  ((unsigned (read_byte)==work_buffer[0])&&(read_byte>=7))
       {
-       ShowMessage("Пакет принят");
+      // ShowMessage("Пакет принят");
         if(DecodeInBuffer())
-       {
-         ShowMessage("Пакет разобран");
-
+        {
+       //  ShowMessage("Пакет разобран");
+          read_byte=0;
         }
         else
-        ShowMessage("Пакет не разобран");
+        {
+      //  ShowMessage("Пакет не разобран");
+        }
       }
 
     /* if(work_buffer[0]==0x55 && Ready_to_start==true) // answer on  time request to wite
