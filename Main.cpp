@@ -19,7 +19,8 @@ bool Ready_to_start=false;//flag counter ready to set the time
 unsigned int read_byte; // the number of bits read from comport
 unsigned char in_buffer[256], out_buffer[256],work_buffer[256];  //com buffers
 
-
+unsigned char IDP; //  request ID  1-byte
+unsigned char IDR; //  additional  request 1-byte
 
 TIniFile *Ini = new TIniFile( dir + "/meters.ini");
 int count_meters=0;
@@ -69,12 +70,17 @@ void __fastcall TForm1::N8Click(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Button3Click(TObject *Sender)
 {
+//************** Clear ValueList Editor*****************************************
+for (int i=1; i<12;i++)
+ValueListEditor1->Cells[1][i]="" ;
+//******************************************************************************
  // ValueListEditor1->Cells[1][1]="7009"  ;
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
- ComPort1->Open();
+  ComPort1->Open();
  //ComPort1->Write("00",1) ;
  ComPort1->Write(ReadInfo,sizeof(ReadInfo)) ;
+ Button3->Enabled=false;
 // new_paket=true;
 // Timer1->Enabled=true;
  //Timer2->Enabled=true;
@@ -181,19 +187,22 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
      ComPort1->Read(&work_buffer[read_byte], Count);
      read_byte+=Count;
 
-      if  ((unsigned (read_byte)==work_buffer[0])&&(read_byte>=7))
+      if  ( (read_byte == work_buffer[0])&&(read_byte>=7))
       {
       // ShowMessage("Пакет принят");
         if(DecodeInBuffer())
         {
-       //  ShowMessage("Пакет разобран");
+        // ShowMessage("Пакет разобран");
           read_byte=0;
+         Timer1->Enabled=true;
         }
         else
         {
       //  ShowMessage("Пакет не разобран");
         read_byte=0;
+        Timer1->Enabled=true;
         }
+
       }
 
     /* if(work_buffer[0]==0x55 && Ready_to_start==true) // answer on  time request to wite
@@ -276,7 +285,9 @@ unsigned short TForm1::CRC16b(unsigned char *msg, int len)
 
 bool TForm1::DecodeInBuffer()
 {
-  //  Check CRC
+
+
+//***********  Check CRC *******************************************************
   if (!CRC16b(&work_buffer[0],work_buffer[0]))  ;
   else
   {
@@ -284,27 +295,52 @@ bool TForm1::DecodeInBuffer()
    return false;
   }
 
-  // ShowMessage("CRC in buuifer =" + IntToStr(work_buffer[read_byte-2]) + " " + IntToStr(work_buffer[read_byte-1]))  ;
-  // ShowMessage("CRC after function  =" + IntToStr(CRC16b(&work_buffer[0],work_buffer[0])))  ;
+//************** Chek Net Adress ***********************************************
 
-  // Chek Net Adress
-//Read Net Adress from Form1
-
-
- //  (GetCurrentNA());
-
-//Read Net Adress from Packet
- // ShowMessage (IntToStr(((work_buffer[2]&0x3f)<<8) + work_buffer[1] ))    ;
-
-  if (GetCurrentNA()==(((work_buffer[2]&0x3f)<<8) + work_buffer[1] ))
+ if (GetCurrentNA()==(((work_buffer[2]&0x3f)<<8) + work_buffer[1] ))
   {
      ValueListEditor1->Cells[1][11]=IntToStr(((work_buffer[2]&0x3f)<<8) + work_buffer[1] )  ;
-   }
+  }
      else
   {
+   ValueListEditor1->Cells[1][11]=IntToStr(((work_buffer[2]&0x3f)<<8) + work_buffer[1] )  ;
    ShowMessage("Не правильный сетевой адрес!!");
    return false;
   }
+
+//*********Check IDP & IDR******************************************************
+ IDP = work_buffer[3];
+ IDR = work_buffer[4];
+ switch (IDP)
+ {case 1:  //  Read system parameters
+  {
+    switch (IDR)
+    {
+      case 0:  //  Read system parameters  of meters
+      {
+      if(ReadSysPar())
+       break;
+       else
+       return false;
+      }
+
+      default:  //
+      {
+      ShowMessage("Неизвестный дополнительный идентефикатор пакета!");
+      return false;
+      }
+
+    }
+
+
+     break;
+  }
+  default:
+  {
+   ShowMessage("Неизвестный идентефикатор пакета!");
+   return false;
+  }
+ }
 
 
    return true;
@@ -320,3 +356,101 @@ IndexTree= TreeView1->Selected->AbsoluteIndex;
  }
  return 0;
 }
+
+bool __fastcall TForm1::ReadSysPar()
+{
+
+ AnsiString InfoMeters="";
+ AnsiString Ver_Protocol="";
+ AnsiString Ver_Soft="";
+ AnsiString Release_Date="";
+ unsigned int Factory_Number=0;
+
+ //************ Read Type of meters *********************************************
+ if(work_buffer[5]=='C') // read character ID
+ InfoMeters+="СЭТ-";
+ else
+ InfoMeters+="Unknow Type ";
+
+ InfoMeters+=  IntToStr((work_buffer[6]<<8) + work_buffer[7]); //read number index
+ InfoMeters+="      Класс точности: " ;
+
+ InfoMeters+=  FloatToStr(float(work_buffer[8])/100) ; //read accuracy class
+
+ InfoMeters+= "     (";
+ InfoMeters+= IntToStr(work_buffer[9]); //read nominal current
+
+ InfoMeters+= " - ";
+ InfoMeters+= IntToStr(work_buffer[10]); //read max current
+ InfoMeters+= ") A ";
+ //read service function
+
+  InfoMeters+= "  Сервисные фунции: ";
+ if (work_buffer[11]&BIT7) InfoMeters+="A";
+ else InfoMeters+=" ";
+ if (work_buffer[11]&BIT6) InfoMeters+="R";
+ else InfoMeters+=" ";
+ InfoMeters+=" ";
+ if (work_buffer[11]&BIT5) InfoMeters+="F";
+ else InfoMeters+=" ";
+ InfoMeters+=" ";
+ if (work_buffer[11]&BIT4) InfoMeters+="R";
+ else InfoMeters+=" ";
+ if (work_buffer[11]&BIT3) InfoMeters+="J";
+ else InfoMeters+=" ";
+ InfoMeters+=" ";
+ if (work_buffer[11]&BIT2) InfoMeters+="M";
+ else InfoMeters+=" ";
+
+ ValueListEditor1->Cells[1][1]= InfoMeters ;
+
+//****** read factory number ***************************************************
+
+ Factory_Number=(work_buffer[13]<<24)+(work_buffer[14]<<16)+(work_buffer[15]<<8)+work_buffer[16];
+ ValueListEditor1->Cells[1][2]= Factory_Number ;
+
+//****** read version protocol ***************************************************
+
+ Ver_Protocol=  IntToStr(work_buffer[17]) + "." + IntToStr(work_buffer[18]) ;
+ ValueListEditor1->Cells[1][3]= Ver_Protocol;
+
+ //****** read version soft ***************************************************
+
+ Ver_Soft=  IntToStr(work_buffer[19]) + "." + IntToStr(work_buffer[20]) ;
+ ValueListEditor1->Cells[1][4]= Ver_Soft;
+
+//****** read release date  ***************************************************
+
+  Release_Date = IntToStr(work_buffer[21]) + "." + IntToStr(work_buffer[22]) + ".20" + IntToStr(work_buffer[23]) ;
+  ValueListEditor1->Cells[1][5]= Release_Date;
+
+//****** Count resets  ****************************************************
+
+   ValueListEditor1->Cells[1][6]= IntToStr(work_buffer[61]);
+
+//****** Count WDT ****************************************************
+
+   ValueListEditor1->Cells[1][7]= IntToStr(work_buffer[63]);
+
+//****** Count Errors ****************************************************
+
+   ValueListEditor1->Cells[1][8]= IntToStr(work_buffer[66]);
+
+//******  Battery Voltage****************************************************
+
+   ValueListEditor1->Cells[1][9]= FloatToStr(float(work_buffer[69])/10);
+
+//******  Working time in hours****************************************************
+
+   ValueListEditor1->Cells[1][10]= IntToStr(((work_buffer[74]<<24)+(work_buffer[73]<<16)+(work_buffer[72]<<8)+work_buffer[71]));
+
+return true;
+}
+void __fastcall TForm1::Timer1Timer(TObject *Sender)
+{
+Timer1->Enabled=false;
+ComPort1->Close();
+Button3->Enabled=true;
+}
+//---------------------------------------------------------------------------
+

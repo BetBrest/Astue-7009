@@ -17,6 +17,24 @@
 #include <TeeProcs.hpp>
 #include <Grids.hpp>
 #include <ValEdit.hpp>
+
+#define BIT0    0x01
+#define BIT1    0x02
+#define BIT2    0x04
+#define BIT3    0x08
+#define BIT4    0x10
+#define BIT5    0x20
+#define BIT6    0x40
+#define BIT7    0x80
+#define BIT8    0x0100
+#define BIT9    0x0200
+#define BIT10   0x0400
+#define BIT11   0x0800
+#define BIT12   0x1000
+#define BIT13   0x2000
+#define BIT14   0x4000
+#define BIT15   0x8000
+#define BIT16   0x010000
 //---------------------------------------------------------------------------
 class TForm1 : public TForm
 {
@@ -50,6 +68,7 @@ __published:	// IDE-managed Components
         TEdit *Edit1;
         TLabel *Label2;
         TButton *Button4;
+        TTimer *Timer1;
         void __fastcall N4Click(TObject *Sender);
         void __fastcall TreeView1Click(TObject *Sender);
         void __fastcall N6Click(TObject *Sender);
@@ -61,6 +80,7 @@ __published:	// IDE-managed Components
         void __fastcall Button4Click(TObject *Sender);
         void __fastcall ComPort1RxChar(TObject *Sender, int Count);
         void __fastcall ComPort1Rx80Full(TObject *Sender);
+        void __fastcall Timer1Timer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 
@@ -102,7 +122,8 @@ struct set_stable_constants_T  //  37 байт
         unsigned short CRC16b(unsigned char *, int);   //   Chek sum
 
         bool DecodeInBuffer();
-        unsigned int GetCurrentNA();   //   true - if decode is right, else - false
+        unsigned int GetCurrentNA();
+        bool __fastcall ReadSysPar();   //   true - if decode is right, else - false
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

@@ -239,4 +239,9 @@ object Form1: TForm1
       OnClick = N8Click
     end
   end
+  object Timer1: TTimer
+    Enabled = False
+    OnTimer = Timer1Timer
+    Left = 264
+  end
 end
