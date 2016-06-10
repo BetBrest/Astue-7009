@@ -79,9 +79,22 @@ ValueListEditor1->Cells[1][i]="" ;
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
  //ComPort1->Write("00",1) ;
+//*************add NEt Adress to packet*****************************************
+
+ if (GetCurrentNA())
+ {
+ ReadInfo[1]=GetCurrentNA();
+ ReadInfo[2]=GetCurrentNA()>>8;
+ //*************add CRC to packet*****************************************
+ ReadInfo[5]=CRC16b(&ReadInfo[0],ReadInfo[0]-2);
+ ReadInfo[6]=CRC16b(&ReadInfo[0],ReadInfo[0]-2)>>8;
  ComPort1->Write(ReadInfo,sizeof(ReadInfo)) ;
  Button3->Enabled=false;
-// new_paket=true;
+ }
+   else
+ ShowMessage("Для получения инорфмации выберите счетчик !");
+
+ // new_paket=true;
 // Timer1->Enabled=true;
  //Timer2->Enabled=true;
 // Button3->Enabled=false;

@@ -103,7 +103,7 @@ object Form1: TForm1
         Left = 42
         Top = 40
         Width = 735
-        Height = 276
+        Height = 233
         KeyOptions = [keyEdit]
         Strings.Strings = (
           #1058#1080#1087' '#1087#1088#1080#1073#1086#1088#1072' ='

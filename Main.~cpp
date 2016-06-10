@@ -77,9 +77,10 @@ ValueListEditor1->Cells[1][i]="" ;
  // ValueListEditor1->Cells[1][1]="7009"  ;
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
- ComPort1->Open();
+  ComPort1->Open();
  //ComPort1->Write("00",1) ;
  ComPort1->Write(ReadInfo,sizeof(ReadInfo)) ;
+ Button3->Enabled=false;
 // new_paket=true;
 // Timer1->Enabled=true;
  //Timer2->Enabled=true;
@@ -362,6 +363,7 @@ bool __fastcall TForm1::ReadSysPar()
  AnsiString InfoMeters="";
  AnsiString Ver_Protocol="";
  AnsiString Ver_Soft="";
+ AnsiString Release_Date="";
  unsigned int Factory_Number=0;
 
  //************ Read Type of meters *********************************************
@@ -411,12 +413,36 @@ bool __fastcall TForm1::ReadSysPar()
 
  Ver_Protocol=  IntToStr(work_buffer[17]) + "." + IntToStr(work_buffer[18]) ;
  ValueListEditor1->Cells[1][3]= Ver_Protocol;
-//****** read version soft ***************************************************
+
+ //****** read version soft ***************************************************
 
  Ver_Soft=  IntToStr(work_buffer[19]) + "." + IntToStr(work_buffer[20]) ;
  ValueListEditor1->Cells[1][4]= Ver_Soft;
 
-//****** read version soft *************************************************** 
+//****** read release date  ***************************************************
+
+  Release_Date = IntToStr(work_buffer[21]) + "." + IntToStr(work_buffer[22]) + ".20" + IntToStr(work_buffer[23]) ;
+  ValueListEditor1->Cells[1][5]= Release_Date;
+
+//****** Count resets  ****************************************************
+
+   ValueListEditor1->Cells[1][6]= IntToStr(work_buffer[61]);
+
+//****** Count WDT ****************************************************
+
+   ValueListEditor1->Cells[1][7]= IntToStr(work_buffer[63]);
+
+//****** Count Errors ****************************************************
+
+   ValueListEditor1->Cells[1][8]= IntToStr(work_buffer[66]);
+
+//******  Battery Voltage****************************************************
+
+   ValueListEditor1->Cells[1][9]= FloatToStr(float(work_buffer[69])/10);
+
+//******  Working time in hours****************************************************
+
+   ValueListEditor1->Cells[1][10]= IntToStr(((work_buffer[74]<<24)+(work_buffer[73]<<16)+(work_buffer[72]<<8)+work_buffer[71]));
 
 return true;
 }
@@ -424,6 +450,7 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
 {
 Timer1->Enabled=false;
 ComPort1->Close();
+Button3->Enabled=true;
 }
 //---------------------------------------------------------------------------
 
