@@ -304,9 +304,11 @@ bool TForm1::DecodeInBuffer()
   if (!CRC16b(&work_buffer[0],work_buffer[0]))  ;
   else
   {
-   ShowMessage("Ошибка контрольной суммы!!!");
-   return false;
+   ShowMessage("Ошибка контрольной суммы!!!" + IntToStr(CRC16b(&work_buffer[0],work_buffer[0]-2)));
+  return false;
   }
+//   ShowMessage(" контрольной суммы!!!" + IntToStr(CRC16b(&work_buffer[0],work_buffer[0]-2)));
+
 
 //************** Chek Net Adress ***********************************************
 
@@ -378,6 +380,7 @@ bool __fastcall TForm1::ReadSysPar()
  AnsiString Ver_Soft="";
  AnsiString Release_Date="";
  unsigned int Factory_Number=0;
+ unsigned int Meter_Status=0;
 
  //************ Read Type of meters *********************************************
  if(work_buffer[5]=='C') // read character ID
@@ -456,6 +459,9 @@ bool __fastcall TForm1::ReadSysPar()
 //******  Working time in hours****************************************************
 
    ValueListEditor1->Cells[1][10]= IntToStr(((work_buffer[74]<<24)+(work_buffer[73]<<16)+(work_buffer[72]<<8)+work_buffer[71]));
+
+//****** The  current meter status ****************************************************
+    Meter_Status = (work_buffer[49]<<24)+(work_buffer[50]<<16)+(work_buffer[51]<<8)+work_buffer[52];
 
 return true;
 }
