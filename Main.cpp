@@ -141,18 +141,11 @@ count_meters = Ini->ReadInteger("Count_meters","Count",0);
  Meter[i].IndexTree = Ini->ReadInteger("meter"+IntToStr(i+1),"IndexTree",0);
   }
 
-// ShowMessage(IntToStr( Meter[0].NetAdres ));
- // ShowMessage(IntToStr( Meter[1].NetAdres ));
-  //   Meter[0].NetAdres[1]= 0;
- //    Meter[0].SpeedRS485=5;
-// My_Meter Meter2={};
-//ShowMessage(IntToStr( ((Meter[0].NetAdres[1]&0x3f)<<8) + Meter[0].NetAdres[0] ));
-//ShowMessage(IntToStr(Meter[0].SpeedRS485 ) );
-//ShowMessage(IntToStr(Meter[0].Ktvolt) );
-//ShowMessage(IntToStr(Meter[0].Ktamper) );
-//ShowMessage(IntToStr(Meter[0].IndexTree[0]+Meter[0].IndexTree[1]) );
-
 //***** End initialization meters from file meters.ini******************************
+
+//***** Set today time***********************************************************
+DateTimePicker1->Date= Now();
+
 }
 //---------------------------------------------------------------------------
 
@@ -551,6 +544,32 @@ TimerTimeout->Enabled=false;
 ShowMessage("Счетчик не отвечает!");
 ComPort1->Close();
 Button3->Enabled=true;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+TDateTime DayBilling;
+Word  Year, Month, Day;
+
+//***************Вычисляем дату и заполняем таблицу***************************
+DayBilling=DateTimePicker1->Date;
+DecodeDate(DayBilling, Year, Month, Day);
+
+//************Clear Grid*******************************************************
+for (int i=StringGrid1->FixedCols;i<StringGrid1->ColCount; i++)
+ StringGrid1->Cols[i]->Clear();
+///*************init string grid***********************************************
+StringGrid1->Cells[0][0]="Дата";
+
+ StringGrid1->Cells[0][Day]= DayBilling.DateString() ;
+ for(int i=1; i< Day; i++)
+  {
+   DayBilling -= 1.0  ;
+   StringGrid1->Cells[0][Day-i]= DayBilling.DateString() ;
+
+  }
 }
 //---------------------------------------------------------------------------
 

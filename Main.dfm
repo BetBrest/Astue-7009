@@ -48,11 +48,38 @@ object Form1: TForm1
     Top = 48
     Width = 793
     Height = 441
-    ActivePage = TabSheet5
-    TabIndex = 4
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #1047#1072' '#1084#1077#1089#1103#1094' '#1087#1086' '#1076#1085#1103#1084
+      object Button1: TButton
+        Left = 704
+        Top = 352
+        Width = 75
+        Height = 25
+        Caption = #1055#1088#1086#1095#1080#1090#1072#1090#1100
+        TabOrder = 0
+        OnClick = Button1Click
+      end
+      object StringGrid1: TStringGrid
+        Left = 7
+        Top = 16
+        Width = 689
+        Height = 393
+        ColCount = 8
+        RowCount = 32
+        TabOrder = 1
+        ColWidths = (
+          64
+          89
+          82
+          100
+          82
+          70
+          71
+          100)
+      end
     end
     object TabSheet2: TTabSheet
       Caption = #1047#1072' '#1075#1086#1076' '#1087#1086' '#1084#1077#1089#1103#1094#1072#1084
@@ -314,14 +341,6 @@ object Form1: TForm1
       end
     end
   end
-  object Button1: TButton
-    Left = 912
-    Top = 8
-    Width = 105
-    Height = 25
-    Caption = #1063#1090#1077#1085#1080#1077
-    TabOrder = 2
-  end
   object DateTimePicker1: TDateTimePicker
     Left = 560
     Top = 8
@@ -334,7 +353,7 @@ object Form1: TForm1
     DateMode = dmComboBox
     Kind = dtkDate
     ParseInput = False
-    TabOrder = 3
+    TabOrder = 2
   end
   object Button2: TButton
     Left = 56
@@ -342,7 +361,7 @@ object Form1: TForm1
     Width = 97
     Height = 25
     Caption = #1055#1088#1086#1074#1077#1088#1082#1072' '#1089#1074#1103#1079#1080
-    TabOrder = 4
+    TabOrder = 3
   end
   object RichEdit1: TRichEdit
     Left = 32
@@ -351,7 +370,7 @@ object Form1: TForm1
     Height = 89
     Lines.Strings = (
       'RichEdit1')
-    TabOrder = 5
+    TabOrder = 4
   end
   object MainMenu1: TMainMenu
     Left = 16

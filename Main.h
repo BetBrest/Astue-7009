@@ -66,7 +66,6 @@ __published:	// IDE-managed Components
         TMenuItem *N2;
         TMenuItem *N3;
         TComPort *ComPort1;
-        TButton *Button1;
         TLabel *Label1;
         TDateTimePicker *DateTimePicker1;
         TButton *Button2;
@@ -107,6 +106,8 @@ __published:	// IDE-managed Components
         TCheckBox *CheckBox10;
         TCheckBox *CheckBox11;
         TCheckBox *CheckBox12;
+        TButton *Button1;
+        TStringGrid *StringGrid1;
         void __fastcall N4Click(TObject *Sender);
         void __fastcall TreeView1Click(TObject *Sender);
         void __fastcall N6Click(TObject *Sender);
@@ -120,6 +121,7 @@ __published:	// IDE-managed Components
         void __fastcall ComPort1Rx80Full(TObject *Sender);
         void __fastcall Timer1Timer(TObject *Sender);
         void __fastcall TimerTimeoutTimer(TObject *Sender);
+        void __fastcall Button1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 
