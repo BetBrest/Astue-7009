@@ -73,6 +73,29 @@ void __fastcall TForm1::Button3Click(TObject *Sender)
 //************** Clear ValueList Editor*****************************************
 for (int i=1; i<12;i++)
 ValueListEditor1->Cells[1][i]="" ;
+//************** Clear ChekBox*****************************************
+CheckBox1->Checked=false;
+CheckBox2->Checked=false;
+CheckBox3->Checked=false;
+CheckBox4->Checked=false;
+CheckBox5->Checked=false;
+CheckBox6->Checked=false;
+CheckBox7->Checked=false;
+CheckBox8->Checked=false;
+CheckBox9->Checked=false;
+CheckBox10->Checked=false;
+CheckBox11->Checked=false;
+CheckBox12->Checked=false;
+CheckBox13->Checked=false;
+CheckBox14->Checked=false;
+CheckBox15->Checked=false;
+CheckBox16->Checked=false;
+CheckBox17->Checked=false;
+CheckBox18->Checked=false;
+CheckBox19->Checked=false;
+CheckBox20->Checked=false;
+CheckBox21->Checked=false;
+
 //******************************************************************************
  // ValueListEditor1->Cells[1][1]="7009"  ;
   dir = GetCurrentDir();
@@ -90,6 +113,7 @@ ValueListEditor1->Cells[1][i]="" ;
  ReadInfo[6]=CRC16b(&ReadInfo[0],ReadInfo[0]-2)>>8;
  ComPort1->Write(ReadInfo,sizeof(ReadInfo)) ;
  Button3->Enabled=false;
+ TimerTimeout->Enabled=true;
  }
    else
  ShowMessage("Для получения инорфмации выберите счетчик !");
@@ -182,6 +206,7 @@ void __fastcall TForm1::Button4Click(TObject *Sender)
 
 void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
 {
+   TimerTimeout->Enabled=false;
     if (new_paket==true)
      {
      new_paket =false;
@@ -461,7 +486,52 @@ bool __fastcall TForm1::ReadSysPar()
    ValueListEditor1->Cells[1][10]= IntToStr(((work_buffer[74]<<24)+(work_buffer[73]<<16)+(work_buffer[72]<<8)+work_buffer[71]));
 
 //****** The  current meter status ****************************************************
-    Meter_Status = (work_buffer[49]<<24)+(work_buffer[50]<<16)+(work_buffer[51]<<8)+work_buffer[52];
+//(byte[0]<<24)+(byte[1]<<16)+byte[2]<<8)+byte[3];
+    Meter_Status = (work_buffer[48]<<24) + (work_buffer[49]<<16) + (work_buffer[50]<<8) + work_buffer[51];///
+    if(Meter_Status & BIT0)
+    CheckBox1->Checked = true;
+    if(Meter_Status & BIT1)
+    CheckBox2->Checked = true;
+    if(Meter_Status & BIT2)
+    CheckBox3->Checked = true;
+    if(Meter_Status & BIT3)
+    CheckBox4->Checked = true;
+    if(Meter_Status & BIT4)
+    CheckBox19->Checked = true;
+    if(Meter_Status & BIT5)
+    CheckBox5->Checked = true;
+    if(Meter_Status & BIT6)
+    CheckBox6->Checked = true;
+    if(Meter_Status & BIT7)
+    CheckBox7->Checked = true;
+    if(Meter_Status & BIT8)
+    CheckBox8->Checked = true;
+    if(Meter_Status & BIT9)
+    CheckBox9->Checked = true;
+    if(Meter_Status & BIT10)
+    CheckBox10->Checked = true;
+    if(Meter_Status & BIT11)
+    CheckBox11->Checked = true;
+    if(Meter_Status & BIT14)
+    CheckBox12->Checked = true;
+    if(Meter_Status & BIT15)
+    CheckBox13->Checked = true;
+    if(Meter_Status & BIT16)
+    CheckBox14->Checked = true;
+    if(Meter_Status & BIT17)
+    CheckBox15->Checked = true;
+    if(Meter_Status & BIT20)
+    CheckBox16->Checked = true;
+    if(Meter_Status & BIT21)
+    CheckBox17->Checked = true;
+    if(Meter_Status & BIT25)
+    CheckBox18->Checked = true;
+    if(Meter_Status & BIT26)
+    CheckBox20->Checked = true;
+    if(Meter_Status & BIT27)
+    CheckBox21->Checked = true;
+
+
 
 return true;
 }
@@ -473,4 +543,14 @@ Button3->Enabled=true;
 }
 //---------------------------------------------------------------------------
 
+
+
+void __fastcall TForm1::TimerTimeoutTimer(TObject *Sender)
+{
+TimerTimeout->Enabled=false;
+ShowMessage("Счетчик не отвечает!");
+ComPort1->Close();
+Button3->Enabled=true;
+}
+//---------------------------------------------------------------------------
 

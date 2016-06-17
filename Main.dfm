@@ -193,8 +193,8 @@ object Form1: TForm1
         TabOrder = 9
       end
       object CheckBox13: TCheckBox
-        Left = 268
-        Top = 361
+        Left = 272
+        Top = 358
         Width = 229
         Height = 17
         Caption = #1082#1086#1085#1090#1088#1086#1083#1100' '#1087#1088#1077#1074'. '#1086#1073#1097#1077#1075#1086' '#1083#1080#1084#1080#1090#1072' '#1101#1085#1077#1088#1075#1080#1080
@@ -264,6 +264,54 @@ object Form1: TForm1
         Caption = #1088#1072#1079#1088#1077#1096#1077#1085#1086' '#1089#1086#1093#1088#1072#1085#1077#1085#1080#1077' '#1089#1088#1077#1079#1086#1074' '#1088#1077#1072#1082#1090#1080#1074#1085#1086#1081' '#1101#1085#1077#1088#1075#1080#1080
         TabOrder = 18
       end
+      object CheckBox7: TCheckBox
+        Left = 272
+        Top = 267
+        Width = 215
+        Height = 17
+        Caption = #1057#1073#1086#1081' '#1095#1072#1089#1086#1074' '#1088#1077#1072#1083#1100#1085#1086#1075#1086' '#1074#1088#1077#1084#1077#1085#1080
+        TabOrder = 19
+      end
+      object CheckBox8: TCheckBox
+        Left = 272
+        Top = 283
+        Width = 215
+        Height = 17
+        Caption = #1055#1088#1077#1074#1099#1096#1077#1085' '#1087#1086#1088#1086#1075' '#1086#1075#1088#1072#1085#1080#1095#1077#1085#1080#1103' '#1085#1072#1075#1088#1091#1079#1082#1080
+        TabOrder = 20
+      end
+      object CheckBox9: TCheckBox
+        Left = 272
+        Top = 299
+        Width = 215
+        Height = 17
+        Caption = #1053#1072#1083#1080#1095#1077' '#1085#1072#1087#1088#1103#1078#1077#1085#1080#1103' '#1092#1072#1079#1099' A'
+        TabOrder = 21
+      end
+      object CheckBox10: TCheckBox
+        Left = 272
+        Top = 313
+        Width = 215
+        Height = 17
+        Caption = #1053#1072#1083#1080#1095#1077' '#1085#1072#1087#1088#1103#1078#1077#1085#1080#1103' '#1092#1072#1079#1099' B'
+        TabOrder = 22
+      end
+      object CheckBox11: TCheckBox
+        Left = 272
+        Top = 328
+        Width = 215
+        Height = 17
+        Caption = #1053#1072#1083#1080#1095#1077' '#1085#1072#1087#1088#1103#1078#1077#1085#1080#1103' '#1092#1072#1079#1099' C'
+        TabOrder = 23
+      end
+      object CheckBox12: TCheckBox
+        Left = 272
+        Top = 343
+        Width = 215
+        Height = 17
+        Caption = #1082#1086#1085#1090#1088#1086#1083#1100' '#1087#1088#1077#1074'. '#1087#1086#1088#1086#1075#1072' '#1084#1086#1097#1085#1086#1089#1090#1080
+        TabOrder = 24
+      end
     end
   end
   object Button1: TButton
@@ -297,61 +345,13 @@ object Form1: TForm1
     TabOrder = 4
   end
   object RichEdit1: TRichEdit
-    Left = 160
-    Top = 504
+    Left = 32
+    Top = 432
     Width = 185
     Height = 89
     Lines.Strings = (
       'RichEdit1')
     TabOrder = 5
-  end
-  object CheckBox7: TCheckBox
-    Left = 520
-    Top = 339
-    Width = 215
-    Height = 17
-    Caption = #1057#1073#1086#1081' '#1095#1072#1089#1086#1074' '#1088#1077#1072#1083#1100#1085#1086#1075#1086' '#1074#1088#1077#1084#1077#1085#1080
-    TabOrder = 6
-  end
-  object CheckBox8: TCheckBox
-    Left = 520
-    Top = 355
-    Width = 215
-    Height = 17
-    Caption = #1055#1088#1077#1074#1099#1096#1077#1085' '#1087#1086#1088#1086#1075' '#1086#1075#1088#1072#1085#1080#1095#1077#1085#1080#1103' '#1085#1072#1075#1088#1091#1079#1082#1080
-    TabOrder = 7
-  end
-  object CheckBox9: TCheckBox
-    Left = 520
-    Top = 371
-    Width = 215
-    Height = 17
-    Caption = #1053#1072#1083#1080#1095#1077' '#1085#1072#1087#1088#1103#1078#1077#1085#1080#1103' '#1092#1072#1079#1099' A'
-    TabOrder = 8
-  end
-  object CheckBox10: TCheckBox
-    Left = 520
-    Top = 387
-    Width = 215
-    Height = 17
-    Caption = #1053#1072#1083#1080#1095#1077' '#1085#1072#1087#1088#1103#1078#1077#1085#1080#1103' '#1092#1072#1079#1099' B'
-    TabOrder = 9
-  end
-  object CheckBox11: TCheckBox
-    Left = 520
-    Top = 403
-    Width = 215
-    Height = 17
-    Caption = #1053#1072#1083#1080#1095#1077' '#1085#1072#1087#1088#1103#1078#1077#1085#1080#1103' '#1092#1072#1079#1099' C'
-    TabOrder = 10
-  end
-  object CheckBox12: TCheckBox
-    Left = 520
-    Top = 419
-    Width = 215
-    Height = 17
-    Caption = #1082#1086#1085#1090#1088#1086#1083#1100' '#1087#1088#1077#1074'. '#1087#1086#1088#1086#1075#1072' '#1084#1086#1097#1085#1086#1089#1090#1080
-    TabOrder = 11
   end
   object MainMenu1: TMainMenu
     Left = 16
@@ -414,5 +414,11 @@ object Form1: TForm1
     Enabled = False
     OnTimer = Timer1Timer
     Left = 264
+  end
+  object TimerTimeout: TTimer
+    Enabled = False
+    Interval = 2000
+    OnTimer = TimerTimeoutTimer
+    Left = 304
   end
 end
