@@ -47,7 +47,7 @@ object Form1: TForm1
     Left = 248
     Top = 48
     Width = 793
-    Height = 441
+    Height = 473
     ActivePage = TabSheet1
     TabIndex = 0
     TabOrder = 1
@@ -79,6 +79,15 @@ object Form1: TForm1
           70
           71
           100)
+      end
+      object ProgressBar1: TProgressBar
+        Left = 16
+        Top = 424
+        Width = 673
+        Height = 17
+        Min = 0
+        Max = 100
+        TabOrder = 2
       end
     end
     object TabSheet2: TTabSheet

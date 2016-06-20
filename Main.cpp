@@ -15,12 +15,15 @@ TForm1 *Form1;
 unsigned char ReadInfo[] ={0x07, 0x34, 0x00, 0x00, 0x00, 0xBB, 0xF0 } ;
 bool new_paket=true;  //  read the new package from the port
 bool Ready_to_start=false;//flag counter ready to set the time
-
+bool DataToGrid=false;
 unsigned int read_byte; // the number of bits read from comport
-unsigned char in_buffer[256], out_buffer[256],work_buffer[256];  //com buffers
+unsigned char work_buffer[256];  //com buffers
+unsigned int Packet_Send=0;
 
 unsigned char IDP; //  request ID  1-byte
 unsigned char IDR; //  additional  request 1-byte
+
+Word  Year, Month, Day;
 
 TIniFile *Ini = new TIniFile( dir + "/meters.ini");
 int count_meters=0;
@@ -108,6 +111,8 @@ CheckBox21->Checked=false;
  {
  ReadInfo[1]=GetCurrentNA();
  ReadInfo[2]=GetCurrentNA()>>8;
+ ReadInfo[3]=0x00;
+ ReadInfo[4]=0x00;
  //*************add CRC to packet*****************************************
  ReadInfo[5]=CRC16b(&ReadInfo[0],ReadInfo[0]-2);
  ReadInfo[6]=CRC16b(&ReadInfo[0],ReadInfo[0]-2)>>8;
@@ -224,8 +229,11 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
         if(DecodeInBuffer())
         {
         // ShowMessage("Пакет разобран");
+          new_paket = true;
           read_byte=0;
          Timer1->Enabled=true;
+         if (Packet_Send)
+         SendData(Packet_Send,10);
         }
         else
         {
@@ -236,52 +244,7 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
 
       }
 
-    /* if(work_buffer[0]==0x55 && Ready_to_start==true) // answer on  time request to wite
-     {
-     ComPort1->ClearBuffer(true, true);
-  //   Clean_buf(work_buffer,256);
-     //  ShowMessage("Yes");
-    // Time_update=true;
-     new_paket = true;
-     Ready_to_start=false;
-   //  ComPort1->Write(WriteTime,14);
-       return;
-     }  */
-
-
-   /*  if(work_buffer[0]==0x55 && Time_update==true)  // answer on  time write request
-     {
-     ComPort1->ClearBuffer(true, true);
-     Clean_buf(work_buffer,256);
-     Time_update=false;
-     Timer2->Enabled=false;
-     ShowMessage("Время установлено!");
-      Timer1->Enabled=true;
-     new_paket = true;
-
-       return;
-     }   */
-
-   /*  if (read_byte==9)   // answer on  time read request
-     {
-     if(work_buffer[7]==0x89)
-     {
-     //ShowMessage("Пакет  принят 89");
-      if(MakeCRC(work_buffer,8)==work_buffer[8])
-        {
-         //ShowMessage(MakeCRC(work_buffer,8));
-         memcpy(&in_buffer[0],&work_buffer[0],read_byte);
-         packet_parsing(&in_buffer[0],read_byte);
-         Timer2->Enabled=false;
-         new_paket =true;
-         }
-        else  ShowMessage("Неправильная контрольная сумма пакета");
-      }
-      else ShowMessage("Неправильный формат пакета");
-
-     }
-
-     */
+  
 
 }
 //---------------------------------------------------------------------------
@@ -363,7 +326,23 @@ bool TForm1::DecodeInBuffer()
       return false;
       }
 
+     }
+
+     break;
+  }
+  case 3:  // energy reading at the beginning of the day
+  {
+    if (IDR < 90)
+    {
+      if(!Energy_begining_day(IDR))
+      return false;
     }
+      else
+      {
+      ShowMessage("Неизвестный дополнительный идентефикатор пакета!");
+      return false;
+      }
+
 
 
      break;
@@ -532,7 +511,25 @@ void __fastcall TForm1::Timer1Timer(TObject *Sender)
 {
 Timer1->Enabled=false;
 ComPort1->Close();
-Button3->Enabled=true;
+Button3->Enabled=true; ///
+ if(DataToGrid==true)
+{
+  DataToGrid=false;
+  for (int i=0; i<Day; i++)
+  {
+    StringGrid1->Cells[1][Day-i]= energy_day[i].energy_t;
+  }
+
+
+}
+
+
+
+
+
+
+
+
 }
 //---------------------------------------------------------------------------
 
@@ -544,6 +541,7 @@ TimerTimeout->Enabled=false;
 ShowMessage("Счетчик не отвечает!");
 ComPort1->Close();
 Button3->Enabled=true;
+
 }
 //---------------------------------------------------------------------------
 
@@ -551,25 +549,84 @@ Button3->Enabled=true;
 void __fastcall TForm1::Button1Click(TObject *Sender)
 {
 TDateTime DayBilling;
-Word  Year, Month, Day;
 
-//***************Вычисляем дату и заполняем таблицу***************************
+
+//***************Get a date and filling first column***************************
 DayBilling=DateTimePicker1->Date;
 DecodeDate(DayBilling, Year, Month, Day);
 
 //************Clear Grid*******************************************************
-for (int i=StringGrid1->FixedCols;i<StringGrid1->ColCount; i++)
+for (int i=0;i<StringGrid1->ColCount; i++)
  StringGrid1->Cols[i]->Clear();
 ///*************init string grid***********************************************
 StringGrid1->Cells[0][0]="Дата";
+StringGrid1->Cells[0][1]="Обшая";
+StringGrid1->Cells[0][2]="Тариф Т1";
+StringGrid1->Cells[0][3]="Тариф Т2";
+StringGrid1->Cells[0][4]="Тариф Т3";
+StringGrid1->Cells[0][5]="Тариф Т4";
 
+
+ ProgressBar1->Max=Day-1;
  StringGrid1->Cells[0][Day]= DayBilling.DateString() ;
  for(int i=1; i< Day; i++)
   {
    DayBilling -= 1.0  ;
    StringGrid1->Cells[0][Day-i]= DayBilling.DateString() ;
+   ProgressBar1->Position=i;
+  // Sleep(100);
 
   }
+
+  Packet_Send=Day;
+//*************open port and send quest**************************************** 
+  dir = GetCurrentDir();
+  ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
+  ComPort1->Open();
+
+ SendData(0,10);
+
+
+
 }
 //---------------------------------------------------------------------------
 
+
+bool __fastcall TForm1::Energy_begining_day(unsigned char i)
+{
+
+//****************Read transformation coefficients****************************
+energy_day[i].kttv= (work_buffer[5]<<8)+ work_buffer[6];
+energy_day[i].kttc= (work_buffer[7]<<8)+ work_buffer[8];
+//****************Read Total Energy*******************************************
+energy_day[i].energy_t=(work_buffer[9]<<24)+ (work_buffer[10]<<16)+ (work_buffer[11]<<8)+ work_buffer[12];
+energy_day[i].energy_t1=(work_buffer[13]<<24)+ (work_buffer[14]<<16)+ (work_buffer[15]<<8)+ work_buffer[16];
+energy_day[i].energy_t2=(work_buffer[17]<<24)+ (work_buffer[18]<<16)+ (work_buffer[19]<<8)+ work_buffer[20];
+energy_day[i].energy_t3=(work_buffer[21]<<24)+ (work_buffer[22]<<16)+ (work_buffer[23]<<8)+ work_buffer[24];
+energy_day[i].energy_t4=(work_buffer[25]<<24)+ (work_buffer[26]<<16)+ (work_buffer[27]<<8)+ work_buffer[28];
+
+// ShowMessage(Energy_T);
+return true;
+}
+
+TForm1::SendData(unsigned char i , int j)
+{
+  if (GetCurrentNA())
+ {
+ ReadInfo[1]=GetCurrentNA();
+ ReadInfo[2]=GetCurrentNA()>>8;
+ ReadInfo[3]=0x02;
+ ReadInfo[4]= i;
+ //*************add CRC to packet*****************************************
+ ReadInfo[5]=CRC16b(&ReadInfo[0],ReadInfo[0]-2);
+ ReadInfo[6]=CRC16b(&ReadInfo[0],ReadInfo[0]-2)>>8;
+ ComPort1->Write(ReadInfo,sizeof(ReadInfo)) ;
+ //Sleep(1000);
+ TimerTimeout->Enabled=true;
+ }
+   else
+ ShowMessage("Для получения инорфмации выберите счетчик !");       //TODO: Add your source code here
+ Packet_Send--;
+ if (!Packet_Send)
+ DataToGrid=true;
+ }

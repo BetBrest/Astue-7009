@@ -108,6 +108,7 @@ __published:	// IDE-managed Components
         TCheckBox *CheckBox12;
         TButton *Button1;
         TStringGrid *StringGrid1;
+        TProgressBar *ProgressBar1;
         void __fastcall N4Click(TObject *Sender);
         void __fastcall TreeView1Click(TObject *Sender);
         void __fastcall N6Click(TObject *Sender);
@@ -153,7 +154,18 @@ struct set_stable_constants_T  //  37 байт
   // unsigned char Ktamper[2];		   //   коэффициэнт трансформации тока
    unsigned int IndexTree;             //   индекс
   // My_Meter(unsigned char s1[2] ,unsigned char s2 );
-}  Meter[2];
+}  Meter[3];
+struct Energy_Day
+{
+ int kttv;
+ int kttc;
+ int energy_t;
+ int energy_t1;
+ int energy_t2;
+ int energy_t3;
+ int energy_t4;
+
+} energy_day[31];
 // My_Meter;//={{{52,0x00},2,{0x01,0},{0x01,0},{0x02,0}},
                    // {{76,0x00},2,{0x01,0},{0x01,0},{0x03,0}}};
 
@@ -164,7 +176,9 @@ struct set_stable_constants_T  //  37 байт
 
         bool DecodeInBuffer();
         unsigned int GetCurrentNA();
-        bool __fastcall ReadSysPar();   //   true - if decode is right, else - false
+        bool __fastcall ReadSysPar();                         //   true - if decode is right, else - false
+        bool __fastcall Energy_begining_day(unsigned char);
+        SendData(unsigned char, int);   //   true - if decode is right, else - false
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

@@ -28,7 +28,7 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
-    <SYSDEFINES value="_RTLDLL;NO_STRICT"/>
+    <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
     <MAINSOURCE value="ASTUE_BEMZ.cpp"/>
     <INCLUDEPATH value="&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;D:\GIT\Astue-7009;$(BCB)\include;$(BCB)\include\vcl;&quot;C:\Program Files\Borland\CBuilder6\сport&quot;;&quot;C:\Program Files (x86)\Borland\CBuilder6\CPORT&quot;"/>
     <LIBPATH value="$(BCB)\Projects\Lib;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;D:\GIT\Astue-7009;$(BCB)\lib\obj;$(BCB)\lib;&quot;C:\Program Files\Borland\CBuilder6\сport&quot;;&quot;C:\Program Files (x86)\Borland\CBuilder6\CPORT&quot;"/>
