@@ -519,6 +519,7 @@ Button3->Enabled=true; ///
  if(DataToGrid==true)
 {
   DataToGrid=false;
+  Day--;
   for (int i=0; i<Day; i++)
   {
     StringGrid1->Cells[1][Day-i]= float(energy_day[i].energy_t)/10000;
@@ -530,10 +531,12 @@ Button3->Enabled=true; ///
     StringGrid1->Cells[7][Day-i]= ((float(energy_day[i].energy_t - energy_day[i+1].energy_t))/10000)*energy_day[i].kttv*energy_day[i].kttc;
     StringGrid1->Cells[8][Day-i]= StringGrid1->Cells[7][Day-i] * Edit2->Text;
     sum_energy = sum_energy + ((float(energy_day[i].energy_t - energy_day[i+1].energy_t))/10000)*energy_day[i].kttv*energy_day[i].kttc;
+    sum_money= sum_money  + StringGrid1->Cells[7][Day-i] * Edit2->Text;
   }
 
     StringGrid1->Cells[0][Day+2]="ÈÒÎÃÎ:"  ;
-    StringGrid1->Cells[7][Day+2]=sum_energy  ;
+    StringGrid1->Cells[7][Day+2]=FloatToStrF(sum_energy, ffFixed,10,2)  ;
+    StringGrid1->Cells[8][Day+2]=FloatToStrF(sum_money, ffFixed,10,0)  ;
 
 
 
@@ -570,7 +573,7 @@ TDateTime DayBilling;
 ProgressBar1->Position=0;
 //***************Get a date and filling first column***************************
 DayBilling=DateTimePicker1->Date;
-DecodeDate(DayBilling, Year, Month, Day);
+DecodeDate(DayBilling, Year, Month, Day); Day++;
 
 //************Clear Grid*******************************************************
 for (int i=0;i<StringGrid1->ColCount; i++)
@@ -588,11 +591,11 @@ StringGrid1->Cells[8][0]="Ñóììà";
 
 
  ProgressBar1->Max=Day-1;
- StringGrid1->Cells[0][Day]= DayBilling.DateString() ;
- for(int i=1; i< Day; i++)
+ StringGrid1->Cells[0][Day-1]= DayBilling.DateString() ;
+ for(int i=1; i< Day-1; i++)
   {
    DayBilling -= 1.0  ;
-   StringGrid1->Cells[0][Day-i]= DayBilling.DateString() ;
+   StringGrid1->Cells[0][Day-i-1]= DayBilling.DateString() ;
    ProgressBar1->Position=i;
   // Sleep(100);
 
