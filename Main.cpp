@@ -233,7 +233,10 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
           read_byte=0;
          Timer1->Enabled=true;
          if (Packet_Send)
+         {
          SendData(Packet_Send,10);
+         ProgressBar1->Position= Day-Packet_Send;
+         }
         }
         else
         {
@@ -509,16 +512,33 @@ return true;
 }
 void __fastcall TForm1::Timer1Timer(TObject *Sender)
 {
+float sum_energy=0, sum_money=0;
 Timer1->Enabled=false;
 ComPort1->Close();
 Button3->Enabled=true; ///
  if(DataToGrid==true)
 {
   DataToGrid=false;
+  Day--;
   for (int i=0; i<Day; i++)
   {
-    StringGrid1->Cells[1][Day-i]= energy_day[i].energy_t;
+    StringGrid1->Cells[1][Day-i]= float(energy_day[i].energy_t)/10000;
+    StringGrid1->Cells[2][Day-i]= float(energy_day[i].energy_t1)/10000;
+    StringGrid1->Cells[3][Day-i]= float(energy_day[i].energy_t2)/10000;
+    StringGrid1->Cells[4][Day-i]= float(energy_day[i].energy_t3)/10000;
+    StringGrid1->Cells[5][Day-i]= float(energy_day[i].energy_t4)/10000;
+    StringGrid1->Cells[6][Day-i]= (float(energy_day[i].energy_t - energy_day[i+1].energy_t))/10000;
+    StringGrid1->Cells[7][Day-i]= ((float(energy_day[i].energy_t - energy_day[i+1].energy_t))/10000)*energy_day[i].kttv*energy_day[i].kttc;
+    StringGrid1->Cells[8][Day-i]= StringGrid1->Cells[7][Day-i] * Edit2->Text;
+    sum_energy = sum_energy + ((float(energy_day[i].energy_t - energy_day[i+1].energy_t))/10000)*energy_day[i].kttv*energy_day[i].kttc;
+    sum_money= sum_money  + StringGrid1->Cells[7][Day-i] * Edit2->Text;
   }
+
+    StringGrid1->Cells[0][Day+2]="ИТОГО:"  ;
+    StringGrid1->Cells[7][Day+2]=FloatToStrF(sum_energy, ffFixed,10,2)  ;
+    StringGrid1->Cells[8][Day+2]=FloatToStrF(sum_money, ffFixed,10,0)  ;
+
+
 
 
 }
@@ -550,29 +570,32 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
 {
 TDateTime DayBilling;
 
-
+ProgressBar1->Position=0;
 //***************Get a date and filling first column***************************
 DayBilling=DateTimePicker1->Date;
-DecodeDate(DayBilling, Year, Month, Day);
+DecodeDate(DayBilling, Year, Month, Day); Day++;
 
 //************Clear Grid*******************************************************
 for (int i=0;i<StringGrid1->ColCount; i++)
  StringGrid1->Cols[i]->Clear();
 ///*************init string grid***********************************************
 StringGrid1->Cells[0][0]="Дата";
-StringGrid1->Cells[0][1]="Обшая";
-StringGrid1->Cells[0][2]="Тариф Т1";
-StringGrid1->Cells[0][3]="Тариф Т2";
-StringGrid1->Cells[0][4]="Тариф Т3";
-StringGrid1->Cells[0][5]="Тариф Т4";
+StringGrid1->Cells[1][0]="Показания общие";
+StringGrid1->Cells[2][0]="Тариф Т1";
+StringGrid1->Cells[3][0]="Тариф Т2";
+StringGrid1->Cells[4][0]="Тариф Т3";
+StringGrid1->Cells[5][0]="Тариф Т4";
+StringGrid1->Cells[6][0]="Разница";
+StringGrid1->Cells[7][0]="Разница c коэф.тр";
+StringGrid1->Cells[8][0]="Сумма";
 
 
  ProgressBar1->Max=Day-1;
- StringGrid1->Cells[0][Day]= DayBilling.DateString() ;
- for(int i=1; i< Day; i++)
+ StringGrid1->Cells[0][Day-1]= DayBilling.DateString() ;
+ for(int i=1; i< Day-1; i++)
   {
    DayBilling -= 1.0  ;
-   StringGrid1->Cells[0][Day-i]= DayBilling.DateString() ;
+   StringGrid1->Cells[0][Day-i-1]= DayBilling.DateString() ;
    ProgressBar1->Position=i;
   // Sleep(100);
 
@@ -629,4 +652,5 @@ TForm1::SendData(unsigned char i , int j)
  Packet_Send--;
  if (!Packet_Send)
  DataToGrid=true;
+ return true;
  }
