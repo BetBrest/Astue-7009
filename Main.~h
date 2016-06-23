@@ -17,6 +17,7 @@
 #include <TeeProcs.hpp>
 #include <Grids.hpp>
 #include <ValEdit.hpp>
+#include <Series.hpp>
 
 #define BIT0    0x01
 #define BIT1    0x02
@@ -70,7 +71,6 @@ __published:	// IDE-managed Components
         TDateTimePicker *DateTimePicker1;
         TButton *Button2;
         TMenuItem *N4;
-        TDBChart *DBChart1;
         TPopupMenu *PopupMenu1;
         TMenuItem *N5;
         TMenuItem *N6;
@@ -113,6 +113,9 @@ __published:	// IDE-managed Components
         TLabel *Label3;
         TStringGrid *StringGrid2;
         TButton *Button5;
+        TChart *Chart1;
+        TButton *Button6;
+        TAreaSeries *Series1;
         void __fastcall N4Click(TObject *Sender);
         void __fastcall TreeView1Click(TObject *Sender);
         void __fastcall N6Click(TObject *Sender);
@@ -127,6 +130,7 @@ __published:	// IDE-managed Components
         void __fastcall Timer1Timer(TObject *Sender);
         void __fastcall TimerTimeoutTimer(TObject *Sender);
         void __fastcall Button1Click(TObject *Sender);
+        void __fastcall Button6Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 
@@ -169,7 +173,7 @@ struct Energy_Day
  int energy_t3;
  int energy_t4;
 
-} energy_day[31];
+} energy_day[32];
 // My_Meter;//={{{52,0x00},2,{0x01,0},{0x01,0},{0x02,0}},
                    // {{76,0x00},2,{0x01,0},{0x01,0},{0x03,0}}};
 
