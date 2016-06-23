@@ -24,6 +24,7 @@ unsigned char IDP; //  request ID  1-byte
 unsigned char IDR; //  additional  request 1-byte
 
 Word  Year, Month, Day;
+double days_between;
 
 TIniFile *Ini = new TIniFile( dir + "/meters.ini");
 int count_meters=0;
@@ -234,7 +235,7 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
          Timer1->Enabled=true;
          if (Packet_Send)
          {
-         SendData(Packet_Send,10);
+         SendData(Packet_Send+int(days_between),10);
          ProgressBar1->Position= Day-Packet_Send;
          }
         }
@@ -335,9 +336,9 @@ bool TForm1::DecodeInBuffer()
   }
   case 3:  // energy reading at the beginning of the day
   {
-    if (IDR < 90)
+    if (IDR < 93)
     {
-      if(!Energy_begining_day(IDR))
+      if(!Energy_begining_day(IDR-int(days_between)))
       return false;
     }
       else
@@ -537,6 +538,7 @@ Button3->Enabled=true; ///
     StringGrid1->Cells[0][Day+2]="ИТОГО:"  ;
     StringGrid1->Cells[7][Day+2]=FloatToStrF(sum_energy, ffFixed,10,2)  ;
     StringGrid1->Cells[8][Day+2]=FloatToStrF(sum_money, ffFixed,10,0)  ;
+    ProgressBar1->Position=0;
 
 
 
@@ -568,25 +570,41 @@ Button3->Enabled=true;
 
 void __fastcall TForm1::Button1Click(TObject *Sender)
 {
-TDateTime DayBilling;
+TDateTime DayBilling, DayToday=Now();
+
+Word  Year2, Month2, Day2;
 
 ProgressBar1->Position=0;
-//***************Get a date and filling first column***************************
+//***************Get a date and chek it**************************
 DayBilling=DateTimePicker1->Date;
 DecodeDate(DayBilling, Year, Month, Day); Day++;
+DecodeDate(DayToday, Year2, Month2, Day2);
+days_between = (double)(DayToday - DayBilling );
+
+ if (days_between < -1) //check the date not earlie today
+ {
+  ShowMessage("Выберите дату не ранее сегодняшнего дня");
+  return;
+ }
+
+ if ((days_between > 93)  || ((Month2-Month )>= 3)  ) //check the date not older than 3 Months
+ {
+  ShowMessage("Выберите дату не позднее трех месяцев");
+  return;
+ }
 
 //************Clear Grid*******************************************************
 for (int i=0;i<StringGrid1->ColCount; i++)
  StringGrid1->Cols[i]->Clear();
-///*************init string grid***********************************************
+///*************init string grid and filling first column************************************************
 StringGrid1->Cells[0][0]="Дата";
 StringGrid1->Cells[1][0]="Показания общие";
 StringGrid1->Cells[2][0]="Тариф Т1";
 StringGrid1->Cells[3][0]="Тариф Т2";
 StringGrid1->Cells[4][0]="Тариф Т3";
 StringGrid1->Cells[5][0]="Тариф Т4";
-StringGrid1->Cells[6][0]="Разница";
-StringGrid1->Cells[7][0]="Разница c коэф.тр";
+StringGrid1->Cells[6][0]="Приращение";
+StringGrid1->Cells[7][0]="Приращение c коэф.тр";
 StringGrid1->Cells[8][0]="Сумма";
 
 
@@ -606,8 +624,8 @@ StringGrid1->Cells[8][0]="Сумма";
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
-
- SendData(0,10);
+  // ShowMessage(int(days_between));
+   SendData(int(days_between),10);
 
 
 
@@ -654,3 +672,5 @@ TForm1::SendData(unsigned char i , int j)
  DataToGrid=true;
  return true;
  }
+
+

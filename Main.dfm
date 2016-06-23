@@ -109,20 +109,94 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1047#1072' '#1075#1086#1076' '#1087#1086' '#1084#1077#1089#1103#1094#1072#1084
       ImageIndex = 1
+      object StringGrid2: TStringGrid
+        Left = 24
+        Top = 24
+        Width = 753
+        Height = 393
+        TabOrder = 0
+      end
+      object Button5: TButton
+        Left = 675
+        Top = 441
+        Width = 75
+        Height = 25
+        Caption = #1057#1095#1080#1090#1072#1090#1100
+        TabOrder = 1
+      end
     end
     object TabSheet3: TTabSheet
       Caption = #1043#1088#1072#1092#1080#1082' '#1079#1072' '#1084#1077#1089#1103#1094
       ImageIndex = 2
-      object DBChart1: TDBChart
-        Left = 96
-        Top = 48
-        Width = 400
-        Height = 250
+      object Chart1: TChart
+        Left = 40
+        Top = 24
+        Width = 657
+        Height = 369
         BackWall.Brush.Color = clWhite
         BackWall.Brush.Style = bsClear
+        Gradient.Direction = gdBottomTop
+        LeftWall.Brush.Color = clWhite
+        Title.Color = clWhite
         Title.Text.Strings = (
-          'TDBChart')
+          #1043#1088#1072#1092#1080#1082' '#1087#1088#1080#1088#1072#1097#1077#1085#1080#1103' '#1101#1085#1077#1088#1075#1080#1080' '#1079#1072' '#1084#1077#1089#1103#1094' '#1087#1086' '#1089#1091#1090#1082#1072#1084)
+        BottomAxis.Grid.Style = psDashDotDot
+        BottomAxis.Grid.Visible = False
+        BottomAxis.Title.Caption = #1044#1072#1090#1072
+        BottomAxis.Title.Font.Charset = DEFAULT_CHARSET
+        BottomAxis.Title.Font.Color = clBlack
+        BottomAxis.Title.Font.Height = -13
+        BottomAxis.Title.Font.Name = 'Arial'
+        BottomAxis.Title.Font.Style = [fsBold]
+        DepthAxis.MinorTicks.Color = 4194432
+        LeftAxis.Axis.Width = 1
+        LeftAxis.ExactDateTime = False
+        LeftAxis.Grid.Style = psDashDot
+        LeftAxis.Grid.SmallDots = True
+        LeftAxis.GridCentered = True
+        LeftAxis.LabelStyle = talValue
+        LeftAxis.Ticks.Style = psDashDotDot
+        LeftAxis.Ticks.SmallDots = True
+        LeftAxis.Title.Caption = #1069#1085#1077#1088#1075#1080#1103' '#1082#1042#1090'. '#1095
+        LeftAxis.Title.Font.Charset = DEFAULT_CHARSET
+        LeftAxis.Title.Font.Color = clBlack
+        LeftAxis.Title.Font.Height = -13
+        LeftAxis.Title.Font.Name = 'Arial'
+        LeftAxis.Title.Font.Style = [fsBold]
+        Legend.Visible = False
+        TopAxis.Grid.Visible = False
+        BevelInner = bvRaised
+        BorderStyle = bsSingle
         TabOrder = 0
+        object Series1: TAreaSeries
+          Cursor = crArrow
+          Marks.ArrowLength = 8
+          Marks.Style = smsValue
+          Marks.Visible = False
+          SeriesColor = clBlue
+          DrawArea = True
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          Pointer.Visible = False
+          Stairs = True
+          XValues.DateTime = False
+          XValues.Name = 'X'
+          XValues.Multiplier = 1
+          XValues.Order = loAscending
+          YValues.DateTime = False
+          YValues.Name = 'Y'
+          YValues.Multiplier = 1
+          YValues.Order = loNone
+        end
+      end
+      object Button6: TButton
+        Left = 664
+        Top = 432
+        Width = 75
+        Height = 25
+        Caption = 'Button6'
+        TabOrder = 1
+        OnClick = Button6Click
       end
     end
     object TabSheet4: TTabSheet

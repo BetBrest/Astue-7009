@@ -111,6 +111,8 @@ __published:	// IDE-managed Components
         TProgressBar *ProgressBar1;
         TEdit *Edit2;
         TLabel *Label3;
+        TStringGrid *StringGrid2;
+        TButton *Button5;
         void __fastcall N4Click(TObject *Sender);
         void __fastcall TreeView1Click(TObject *Sender);
         void __fastcall N6Click(TObject *Sender);

@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 728
-  Top = 129
+  Left = 442
+  Top = 132
   BorderStyle = bsSingle
   Caption = #1040#1057#1058#1059#1069'('#1057#1069#1058'7009) '#1054#1040#1054' "'#1041#1069#1052#1047'"'
   ClientHeight = 635
@@ -48,8 +48,8 @@ object Form1: TForm1
     Top = 48
     Width = 793
     Height = 505
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet2
+    TabIndex = 1
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #1047#1072' '#1084#1077#1089#1103#1094' '#1087#1086' '#1076#1085#1103#1084
@@ -109,6 +109,21 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = #1047#1072' '#1075#1086#1076' '#1087#1086' '#1084#1077#1089#1103#1094#1072#1084
       ImageIndex = 1
+      object StringGrid2: TStringGrid
+        Left = 24
+        Top = 24
+        Width = 753
+        Height = 393
+        TabOrder = 0
+      end
+      object Button5: TButton
+        Left = 675
+        Top = 441
+        Width = 75
+        Height = 25
+        Caption = #1057#1095#1080#1090#1072#1090#1100
+        TabOrder = 1
+      end
     end
     object TabSheet3: TTabSheet
       Caption = #1043#1088#1072#1092#1080#1082' '#1079#1072' '#1084#1077#1089#1103#1094
