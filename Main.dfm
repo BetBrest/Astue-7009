@@ -48,8 +48,8 @@ object Form1: TForm1
     Top = 48
     Width = 793
     Height = 505
-    ActivePage = TabSheet3
-    TabIndex = 2
+    ActivePage = TabSheet2
+    TabIndex = 1
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #1047#1072' '#1084#1077#1089#1103#1094' '#1087#1086' '#1076#1085#1103#1084
@@ -114,6 +114,8 @@ object Form1: TForm1
         Top = 24
         Width = 753
         Height = 393
+        ColCount = 9
+        RowCount = 28
         TabOrder = 0
       end
       object Button5: TButton
@@ -123,6 +125,7 @@ object Form1: TForm1
         Height = 25
         Caption = #1057#1095#1080#1090#1072#1090#1100
         TabOrder = 1
+        OnClick = Button5Click
       end
     end
     object TabSheet3: TTabSheet

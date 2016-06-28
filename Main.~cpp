@@ -681,7 +681,7 @@ Series1->Clear();
 for (int i=1; i<=Day; i++)
 {
 Series1->AddXY(Day-i,(float(energy_day[i-1].energy_t- energy_day[i].energy_t)/10000)*energy_day[i].kttv*energy_day[i].kttc);
-ShowMessage((float(energy_day[i-1].energy_t- energy_day[i].energy_t)/10000)*energy_day[i].kttv*energy_day[i].kttc);
+//ShowMessage((float(energy_day[i-1].energy_t- energy_day[i].energy_t)/10000)*energy_day[i].kttv*energy_day[i].kttc);
 }
 for (int i=Day; i<32; i++)
 {

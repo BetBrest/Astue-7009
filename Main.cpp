@@ -24,7 +24,7 @@ unsigned char IDP; //  request ID  1-byte
 unsigned char IDR; //  additional  request 1-byte
 
 Word  Year, Month, Day;
-double days_between;
+double days_between,Mounth_between;
 
 TIniFile *Ini = new TIniFile( dir + "/meters.ini");
 int count_meters=0;
@@ -235,6 +235,7 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
          Timer1->Enabled=true;
          if (Packet_Send)
          {
+         Sleep(15);
          SendData(Packet_Send+int(days_between),10);
          ProgressBar1->Position= Day-Packet_Send;
          }
@@ -620,7 +621,7 @@ StringGrid1->Cells[8][0]="Сумма";
   }
 
   Packet_Send=Day;
-//*************open port and send quest**************************************** 
+//*************open port and send quest****************************************
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
@@ -687,6 +688,69 @@ for (int i=Day; i<32; i++)
 {
 Series1->AddXY(i,0);
 }
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Button5Click(TObject *Sender)
+{
+ TDateTime MonthBilling, DayToday=Now();
+
+Word  Year2, Month2, Day2;
+
+//ProgressBar1->Position=0;
+//***************Get a date and chek it**************************
+DayBilling=DateTimePicker1->Date;
+DecodeDate(DayBilling, Year, Month, Day); Day++;
+DecodeDate(DayToday, Year2, Month2, Day2);
+Mounth_between = (double)(DayToday - DayBilling );
+
+ if (days_between < -1) //check the date not earlie today
+ {
+  ShowMessage("Выберите дату не ранее сегодняшнего дня");
+  return;
+ }
+
+ if ((days_between > 93)  || ((Month2-Month )>= 3)  ) //check the date not older than 3 Months
+ {
+  ShowMessage("Выберите дату не позднее трех месяцев");
+  return;
+ }
+
+//************Clear Grid*******************************************************
+for (int i=0;i<StringGrid1->ColCount; i++)
+ StringGrid1->Cols[i]->Clear();
+///*************init string grid and filling first column************************************************
+StringGrid1->Cells[0][0]="Дата";
+StringGrid1->Cells[1][0]="Показания общие";
+StringGrid1->Cells[2][0]="Тариф Т1";
+StringGrid1->Cells[3][0]="Тариф Т2";
+StringGrid1->Cells[4][0]="Тариф Т3";
+StringGrid1->Cells[5][0]="Тариф Т4";
+StringGrid1->Cells[6][0]="Приращение";
+StringGrid1->Cells[7][0]="Приращение c коэф.тр";
+StringGrid1->Cells[8][0]="Сумма";
+
+
+ ProgressBar1->Max=Day-1;
+ StringGrid1->Cells[0][Day-1]= DayBilling.DateString() ;
+ for(int i=1; i< Day-1; i++)
+  {
+   DayBilling -= 1.0  ;
+   StringGrid1->Cells[0][Day-i-1]= DayBilling.DateString() ;
+   ProgressBar1->Position=i;
+  // Sleep(100);
+
+  }
+
+  Packet_Send=Day;
+//*************open port and send quest****************************************
+  dir = GetCurrentDir();
+  ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
+  ComPort1->Open();
+  // ShowMessage(int(days_between));
+   SendData(int(days_between),10);
+                                    */
 
 }
 //---------------------------------------------------------------------------
