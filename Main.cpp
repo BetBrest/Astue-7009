@@ -582,7 +582,7 @@ DecodeDate(DayBilling, Year, Month, Day); Day++;
 DecodeDate(DayToday, Year2, Month2, Day2);
 days_between = (double)(DayToday - DayBilling );
 
- if (days_between < -1) //check the date not earlie today
+ if (days_between < 0) //check the date not earlie today
  {
   ShowMessage("Выберите дату не ранее сегодняшнего дня");
   return;
@@ -696,43 +696,92 @@ void __fastcall TForm1::Button5Click(TObject *Sender)
 {
  TDateTime MonthBilling, DayToday=Now();
 
-Word  Year2, Month2, Day2;
+ Word  Year2, Month2, Day2;
 
 //ProgressBar1->Position=0;
 //***************Get a date and chek it**************************
-DayBilling=DateTimePicker1->Date;
-DecodeDate(DayBilling, Year, Month, Day); Day++;
+MonthBilling=DateTimePicker1->Date;
+DecodeDate(MonthBilling, Year, Month, Day); Day++;
 DecodeDate(DayToday, Year2, Month2, Day2);
-Mounth_between = (double)(DayToday - DayBilling );
+Mounth_between = (double)(DayToday - MonthBilling );
 
- if (days_between < -1) //check the date not earlie today
+ if (Mounth_between < 0) //check the date not earlie today
  {
   ShowMessage("Выберите дату не ранее сегодняшнего дня");
   return;
  }
 
- if ((days_between > 93)  || ((Month2-Month )>= 3)  ) //check the date not older than 3 Months
+ //************Clear Grid*******************************************************
+ for (int i=0;i<StringGrid2->ColCount; i++)
+  StringGrid2->Cols[i]->Clear();
+///*************init string grid and filling first column************************************************
+ StringGrid2->Cells[0][0]="Дата";
+ StringGrid2->Cells[1][0]="Показания общие";
+ StringGrid2->Cells[2][0]="Тариф Т1";
+ StringGrid2->Cells[3][0]="Тариф Т2";
+ StringGrid2->Cells[4][0]="Тариф Т3";
+ StringGrid2->Cells[5][0]="Тариф Т4";
+ StringGrid2->Cells[6][0]="Приращение";
+ StringGrid2->Cells[7][0]="Приращение c коэф.тр";
+ StringGrid2->Cells[8][0]="Сумма";
+
+
+ if(RadioButton1->Checked)  //if cheked with begin of year
  {
-  ShowMessage("Выберите дату не позднее трех месяцев");
-  return;
+  if ((Year2-Year )> 0  ) //check the date in this year
+  {
+   ShowMessage("Выберите дату в этом году!" );
+   return;
+  }
+
+   Mounth_between= Month;
+
+   for(int i=0; i< Month; i++)
+   {
+    StringGrid2->Cells[0][Month-i]=  EncodeDate(Year, Month-i, 1).DateString() ;
+   }
  }
 
-//************Clear Grid*******************************************************
-for (int i=0;i<StringGrid1->ColCount; i++)
- StringGrid1->Cols[i]->Clear();
-///*************init string grid and filling first column************************************************
-StringGrid1->Cells[0][0]="Дата";
-StringGrid1->Cells[1][0]="Показания общие";
-StringGrid1->Cells[2][0]="Тариф Т1";
-StringGrid1->Cells[3][0]="Тариф Т2";
-StringGrid1->Cells[4][0]="Тариф Т3";
-StringGrid1->Cells[5][0]="Тариф Т4";
-StringGrid1->Cells[6][0]="Приращение";
-StringGrid1->Cells[7][0]="Приращение c коэф.тр";
-StringGrid1->Cells[8][0]="Сумма";
+  if(RadioButton2->Checked)  //if cheked with begin of last year
+  {
+    if ((Year2-Year )!=1  ) //check the date in this year
+   {
+    ShowMessage("Выберите дату за прошлый год!" );
+    return;
+   }
+
+    Mounth_between= Month;
+
+   for(int i=0; i< Month; i++)
+   {
+    StringGrid2->Cells[0][Month-i]=  EncodeDate(Year, Month-i, 1).DateString() ;
+   }
+
+  }
+
+    if(RadioButton3->Checked)  //if cheked with begin of last year
+  {
+    Mounth_between= Month;
+   int j=0;
+   for(int i=0; i< 24; i++)
+   {
+
+     if ((Month-j)==0)
+     {
+      Year--;
+      Month=12 ;
+      j=0;
+
+     }
+    StringGrid2->Cells[0][24-i]=  EncodeDate(Year, Month-j, 1).DateString() ;
+    j++;
+
+   }
+
+  }
 
 
- ProgressBar1->Max=Day-1;
+/* ProgressBar1->Max=Day-1;
  StringGrid1->Cells[0][Day-1]= DayBilling.DateString() ;
  for(int i=1; i< Day-1; i++)
   {
@@ -754,4 +803,5 @@ StringGrid1->Cells[8][0]="Сумма";
 
 }
 //---------------------------------------------------------------------------
+
 

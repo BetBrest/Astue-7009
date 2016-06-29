@@ -116,6 +116,9 @@ __published:	// IDE-managed Components
         TChart *Chart1;
         TButton *Button6;
         TAreaSeries *Series1;
+        TRadioButton *RadioButton1;
+        TRadioButton *RadioButton2;
+        TRadioButton *RadioButton3;
         void __fastcall N4Click(TObject *Sender);
         void __fastcall TreeView1Click(TObject *Sender);
         void __fastcall N6Click(TObject *Sender);

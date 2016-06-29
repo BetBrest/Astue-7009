@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 318
-  Top = 135
+  Left = 251
+  Top = 140
   BorderStyle = bsSingle
   Caption = #1040#1057#1058#1059#1069'('#1057#1069#1058'7009) '#1054#1040#1054' "'#1041#1069#1052#1047'"'
   ClientHeight = 635
@@ -75,6 +75,7 @@ object Form1: TForm1
         Width = 770
         Height = 393
         ColCount = 9
+        FixedCols = 0
         RowCount = 35
         TabOrder = 1
         ColWidths = (
@@ -115,8 +116,20 @@ object Form1: TForm1
         Width = 753
         Height = 393
         ColCount = 9
+        DefaultColWidth = 80
+        FixedCols = 0
         RowCount = 28
         TabOrder = 0
+        ColWidths = (
+          80
+          88
+          80
+          80
+          80
+          80
+          80
+          80
+          80)
       end
       object Button5: TButton
         Left = 675
@@ -126,6 +139,32 @@ object Form1: TForm1
         Caption = #1057#1095#1080#1090#1072#1090#1100
         TabOrder = 1
         OnClick = Button5Click
+      end
+      object RadioButton1: TRadioButton
+        Left = 88
+        Top = 432
+        Width = 113
+        Height = 17
+        Caption = 'C '#1085#1072#1095#1072#1083#1072'  '#1075#1086#1076#1072
+        Checked = True
+        TabOrder = 2
+        TabStop = True
+      end
+      object RadioButton2: TRadioButton
+        Left = 224
+        Top = 432
+        Width = 113
+        Height = 17
+        Caption = #1047#1072' '#1087#1088#1086#1096#1083#1099#1081' '#1075#1086#1076
+        TabOrder = 3
+      end
+      object RadioButton3: TRadioButton
+        Left = 368
+        Top = 432
+        Width = 137
+        Height = 17
+        Caption = #1047#1072' '#1087#1086#1089#1083#1077#1076#1085#1080#1077' 2 '#1075#1086#1076#1072
+        TabOrder = 4
       end
     end
     object TabSheet3: TTabSheet
