@@ -694,14 +694,23 @@ Series1->AddXY(i,0);
 
 void __fastcall TForm1::Button5Click(TObject *Sender)
 {
- TDateTime MonthBilling, DayToday=Now();
+ TDateTime MonthBilling, DayToday=Now(),test=Now();
 
  Word  Year2, Month2, Day2;
 
 //ProgressBar1->Position=0;
 //***************Get a date and chek it**************************
-MonthBilling=DateTimePicker1->Date;
-DecodeDate(MonthBilling, Year, Month, Day); Day++;
+
+test=EncodeTime(0,0,0,0);
+
+//ShowMessage(test.TimeString());
+ MonthBilling=DateTimePicker1->DateTime;
+ ReplaceTime(MonthBilling, test);
+ DecodeDate(MonthBilling, Year, Month, Day); //Day++;
+
+
+//ShowMessage(MonthBilling.TimeString() + MonthBilling.DateString() );
+//ShowMessage(DayToday.TimeString()+ DayToday.DateString()  );
 DecodeDate(DayToday, Year2, Month2, Day2);
 Mounth_between = (double)(DayToday - MonthBilling );
 

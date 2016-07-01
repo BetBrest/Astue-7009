@@ -694,14 +694,23 @@ Series1->AddXY(i,0);
 
 void __fastcall TForm1::Button5Click(TObject *Sender)
 {
- TDateTime MonthBilling, DayToday=Now();
+ TDateTime MonthBilling, DayToday=Now(),test=Now();
 
  Word  Year2, Month2, Day2;
 
 //ProgressBar1->Position=0;
 //***************Get a date and chek it**************************
-MonthBilling=DateTimePicker1->Date;
-DecodeDate(MonthBilling, Year, Month, Day); Day++;
+
+test=EncodeTime(0,0,0,0);
+
+//ShowMessage(test.TimeString());
+ MonthBilling=DateTimePicker1->DateTime;
+ ReplaceTime(MonthBilling, test);
+ DecodeDate(MonthBilling, Year, Month, Day); //Day++;
+
+
+//ShowMessage(MonthBilling.TimeString() + MonthBilling.DateString() );
+//ShowMessage(DayToday.TimeString()+ DayToday.DateString()  );
 DecodeDate(DayToday, Year2, Month2, Day2);
 Mounth_between = (double)(DayToday - MonthBilling );
 
@@ -727,22 +736,58 @@ Mounth_between = (double)(DayToday - MonthBilling );
 
 
  if(RadioButton1->Checked)  //if cheked with begin of year
-{
- if ((Year2-Year )> 0  ) //check the date in this year
  {
-  ShowMessage("Выберите дату в этом году!" );
-  return;
- }
-Mounth_between= Month;
-  for(int i=0; i< Month; i++)
+  if ((Year2-Year )> 0  ) //check the date in this year
   {
+   ShowMessage("Выберите дату в этом году!" );
+   return;
+  }
 
-   StringGrid2->Cells[0][Month-i]=  EncodeDate(Year, Month-i, 1).DateString() ;
- // ShowMessage(  EncodeDate(Year, 2, Day).DateString());
+   Mounth_between= Month;
+
+   for(int i=0; i< Month; i++)
+   {
+    StringGrid2->Cells[0][Month-i]=  EncodeDate(Year, Month-i, 1).DateString() ;
+   }
+ }
+
+  if(RadioButton2->Checked)  //if cheked with begin of last year
+  {
+    if ((Year2-Year )!=1  ) //check the date in this year
+   {
+    ShowMessage("Выберите дату за прошлый год!" );
+    return;
    }
 
-}
+    Mounth_between= Month;
 
+   for(int i=0; i< Month; i++)
+   {
+    StringGrid2->Cells[0][Month-i]=  EncodeDate(Year, Month-i, 1).DateString() ;
+   }
+
+  }
+
+    if(RadioButton3->Checked)  //if cheked with begin of last year
+  {
+    Mounth_between= Month;
+   int j=0;
+   for(int i=0; i< 24; i++)
+   {
+
+     if ((Month-j)==0)
+     {
+      Year--;
+      Month=12 ;
+      j=0;
+
+     }
+    StringGrid2->Cells[0][24-i]=  EncodeDate(Year, Month-j, 1).DateString() ;
+    j++;
+
+   }
+
+  }
 
 
 /* ProgressBar1->Max=Day-1;
@@ -767,4 +812,5 @@ Mounth_between= Month;
 
 }
 //---------------------------------------------------------------------------
+
 
