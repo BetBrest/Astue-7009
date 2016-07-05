@@ -189,8 +189,8 @@ struct Energy_Day
         bool DecodeInBuffer();
         unsigned int GetCurrentNA();
         bool __fastcall ReadSysPar();                         //   true - if decode is right, else - false
-        bool __fastcall Energy_begining_day(unsigned char);
-        SendData(unsigned char, int);   //   true - if decode is right, else - false
+        bool __fastcall Energy_begining_day(unsigned char);     //   true - if decode is right, else - false
+        SendData(unsigned char, unsigned char, unsigned int);   // IDP, IDR,NET_ADRESS
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

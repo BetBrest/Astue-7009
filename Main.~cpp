@@ -236,7 +236,10 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
          if (Packet_Send)
          {
          Sleep(15);
-         SendData(Packet_Send+int(days_between),10);
+         SendData(0x02,Packet_Send+int(days_between),10);
+         Packet_Send--;
+         if (!Packet_Send)
+         DataToGrid=true;
          ProgressBar1->Position= Day-Packet_Send;
          }
         }
@@ -578,6 +581,7 @@ Word  Year2, Month2, Day2;
 ProgressBar1->Position=0;
 //***************Get a date and chek it**************************
 DayBilling=DateTimePicker1->Date;
+ReplaceTime(DayBilling, EncodeTime(0,0,0,0));
 DecodeDate(DayBilling, Year, Month, Day); Day++;
 DecodeDate(DayToday, Year2, Month2, Day2);
 days_between = (double)(DayToday - DayBilling );
@@ -626,7 +630,7 @@ StringGrid1->Cells[8][0]="Сумма";
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
   // ShowMessage(int(days_between));
-   SendData(int(days_between),10);
+   SendData(0x02, int(days_between),10);
 
 
 
@@ -651,14 +655,14 @@ energy_day[i].energy_t4=(work_buffer[25]<<24)+ (work_buffer[26]<<16)+ (work_buff
 return true;
 }
 
-TForm1::SendData(unsigned char i , int j)
+TForm1::SendData(unsigned char i , unsigned char  j, unsigned int k)
 {
   if (GetCurrentNA())
  {
  ReadInfo[1]=GetCurrentNA();
  ReadInfo[2]=GetCurrentNA()>>8;
- ReadInfo[3]=0x02;
- ReadInfo[4]= i;
+ ReadInfo[3]= i;
+ ReadInfo[4]= j;
  //*************add CRC to packet*****************************************
  ReadInfo[5]=CRC16b(&ReadInfo[0],ReadInfo[0]-2);
  ReadInfo[6]=CRC16b(&ReadInfo[0],ReadInfo[0]-2)>>8;
@@ -668,9 +672,7 @@ TForm1::SendData(unsigned char i , int j)
  }
    else
  ShowMessage("Для получения инорфмации выберите счетчик !");       //TODO: Add your source code here
- Packet_Send--;
- if (!Packet_Send)
- DataToGrid=true;
+
  return true;
  }
 
@@ -694,18 +696,15 @@ Series1->AddXY(i,0);
 
 void __fastcall TForm1::Button5Click(TObject *Sender)
 {
- TDateTime MonthBilling, DayToday=Now(),test=Now();
+ TDateTime MonthBilling, DayToday=Now();
 
  Word  Year2, Month2, Day2;
 
 //ProgressBar1->Position=0;
 //***************Get a date and chek it**************************
 
-test=EncodeTime(0,0,0,0);
-
-//ShowMessage(test.TimeString());
  MonthBilling=DateTimePicker1->DateTime;
- ReplaceTime(MonthBilling, test);
+ ReplaceTime(MonthBilling, EncodeTime(0,0,0,0));
  DecodeDate(MonthBilling, Year, Month, Day); //Day++;
 
 

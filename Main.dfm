@@ -48,8 +48,8 @@ object Form1: TForm1
     Top = 48
     Width = 793
     Height = 505
-    ActivePage = TabSheet1
-    TabIndex = 0
+    ActivePage = TabSheet5
+    TabIndex = 4
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #1047#1072' '#1084#1077#1089#1103#1094' '#1087#1086' '#1076#1085#1103#1084
@@ -572,13 +572,13 @@ object Form1: TForm1
   end
   object Timer1: TTimer
     Enabled = False
-    Interval = 5000
+    Interval = 500
     OnTimer = Timer1Timer
     Left = 264
   end
   object TimerTimeout: TTimer
     Enabled = False
-    Interval = 3000
+    Interval = 4000
     OnTimer = TimerTimeoutTimer
     Left = 304
   end

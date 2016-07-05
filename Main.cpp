@@ -108,7 +108,7 @@ CheckBox21->Checked=false;
  //ComPort1->Write("00",1) ;
 //*************add NEt Adress to packet*****************************************
 
- if (GetCurrentNA())
+ /*if (GetCurrentNA())
  {
  ReadInfo[1]=GetCurrentNA();
  ReadInfo[2]=GetCurrentNA()>>8;
@@ -118,17 +118,14 @@ CheckBox21->Checked=false;
  ReadInfo[5]=CRC16b(&ReadInfo[0],ReadInfo[0]-2);
  ReadInfo[6]=CRC16b(&ReadInfo[0],ReadInfo[0]-2)>>8;
  ComPort1->Write(ReadInfo,sizeof(ReadInfo)) ;
- Button3->Enabled=false;
- TimerTimeout->Enabled=true;
+
  }
    else
- ShowMessage("Для получения инорфмации выберите счетчик !");
+ ShowMessage("Для получения инорфмации выберите счетчик !");    */
+  Button3->Enabled=false;
+  SendData(0x00,0x00,0x10);
 
- // new_paket=true;
-// Timer1->Enabled=true;
- //Timer2->Enabled=true;
-// Button3->Enabled=false;
-//ComPort1->Close();
+ //TimerTimeout->Enabled=true;
 
 
 }
@@ -232,13 +229,24 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
         // ShowMessage("Пакет разобран");
           new_paket = true;
           read_byte=0;
-         Timer1->Enabled=true;
+
          if (Packet_Send)
          {
          Sleep(15);
-         SendData(Packet_Send+int(days_between),10);
+         SendData(0x02,Packet_Send+int(days_between),10);
+         Packet_Send--;
+         if (!Packet_Send)
+         DataToGrid=true;
          ProgressBar1->Position= Day-Packet_Send;
          }
+         else
+        {
+         Timer1->Enabled=true;
+        }
+
+       // Form1->Timer1Timer( Sender);
+         //Button3->Enabled=true;
+        ///Timer1Timer(0);
         }
         else
         {
@@ -561,9 +569,10 @@ Button3->Enabled=true; ///
 void __fastcall TForm1::TimerTimeoutTimer(TObject *Sender)
 {
 TimerTimeout->Enabled=false;
+Button3->Enabled=true;
 ShowMessage("Счетчик не отвечает!");
 ComPort1->Close();
-Button3->Enabled=true;
+
 
 }
 //---------------------------------------------------------------------------
@@ -627,7 +636,7 @@ StringGrid1->Cells[8][0]="Сумма";
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
   // ShowMessage(int(days_between));
-   SendData(int(days_between),10);
+   SendData(0x02, int(days_between),10);
 
 
 
@@ -652,14 +661,14 @@ energy_day[i].energy_t4=(work_buffer[25]<<24)+ (work_buffer[26]<<16)+ (work_buff
 return true;
 }
 
-TForm1::SendData(unsigned char i , int j)
+TForm1::SendData(unsigned char i , unsigned char  j, unsigned int k)
 {
   if (GetCurrentNA())
  {
  ReadInfo[1]=GetCurrentNA();
  ReadInfo[2]=GetCurrentNA()>>8;
- ReadInfo[3]=0x02;
- ReadInfo[4]= i;
+ ReadInfo[3]= i;
+ ReadInfo[4]= j;
  //*************add CRC to packet*****************************************
  ReadInfo[5]=CRC16b(&ReadInfo[0],ReadInfo[0]-2);
  ReadInfo[6]=CRC16b(&ReadInfo[0],ReadInfo[0]-2)>>8;
@@ -668,10 +677,10 @@ TForm1::SendData(unsigned char i , int j)
  TimerTimeout->Enabled=true;
  }
    else
- ShowMessage("Для получения инорфмации выберите счетчик !");       //TODO: Add your source code here
- Packet_Send--;
- if (!Packet_Send)
- DataToGrid=true;
+{
+  Button3->Enabled=true;
+  ShowMessage("Для получения инорфмации выберите счетчик !");       //TODO: Add your source code here
+ }
  return true;
  }
 
