@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 278
-  Top = 124
+  Left = 323
+  Top = 123
   BorderStyle = bsSingle
-  Caption = '!?'
+  Caption = #1055#1088#1086#1075#1088#1072#1084#1084#1072' '#1090#1077#1093#1085#1080#1095#1077#1089#1082#1086#1075#1086' '#1091#1095#1077#1090#1072' '#1088#1072#1089#1093#1086#1076#1072' '#1101#1083#1077#1082#1090#1088#1086#1101#1085#1077#1088#1075#1080#1080
   ClientHeight = 635
   ClientWidth = 1127
   Color = clBtnFace
@@ -48,8 +48,8 @@ object Form1: TForm1
     Top = 48
     Width = 793
     Height = 505
-    ActivePage = TabSheet2
-    TabIndex = 1
+    ActivePage = TabSheet1
+    TabIndex = 0
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = #1047#1072' '#1084#1077#1089#1103#1094' '#1087#1086' '#1076#1085#1103#1084

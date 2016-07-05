@@ -578,6 +578,7 @@ Word  Year2, Month2, Day2;
 ProgressBar1->Position=0;
 //***************Get a date and chek it**************************
 DayBilling=DateTimePicker1->Date;
+ReplaceTime(DayBilling, EncodeTime(0,0,0,0));
 DecodeDate(DayBilling, Year, Month, Day); Day++;
 DecodeDate(DayToday, Year2, Month2, Day2);
 days_between = (double)(DayToday - DayBilling );
@@ -694,18 +695,15 @@ Series1->AddXY(i,0);
 
 void __fastcall TForm1::Button5Click(TObject *Sender)
 {
- TDateTime MonthBilling, DayToday=Now(),test=Now();
+ TDateTime MonthBilling, DayToday=Now();
 
  Word  Year2, Month2, Day2;
 
 //ProgressBar1->Position=0;
 //***************Get a date and chek it**************************
 
-test=EncodeTime(0,0,0,0);
-
-//ShowMessage(test.TimeString());
  MonthBilling=DateTimePicker1->DateTime;
- ReplaceTime(MonthBilling, test);
+ ReplaceTime(MonthBilling, EncodeTime(0,0,0,0));
  DecodeDate(MonthBilling, Year, Month, Day); //Day++;
 
 
