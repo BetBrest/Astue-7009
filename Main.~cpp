@@ -23,6 +23,8 @@ unsigned int Packet_Send=0;
 unsigned char IDP; //  request ID  1-byte
 unsigned char IDR; //  additional  request 1-byte
 
+unsigned char flag_IDP=0; //  IDP=2 -day begin, IDP=3 - month begin
+
 Word  Year, Month, Day;
 double days_between,Mounth_between;
 
@@ -108,7 +110,7 @@ CheckBox21->Checked=false;
  //ComPort1->Write("00",1) ;
 //*************add NEt Adress to packet*****************************************
 
- if (GetCurrentNA())
+ /*if (GetCurrentNA())
  {
  ReadInfo[1]=GetCurrentNA();
  ReadInfo[2]=GetCurrentNA()>>8;
@@ -118,17 +120,14 @@ CheckBox21->Checked=false;
  ReadInfo[5]=CRC16b(&ReadInfo[0],ReadInfo[0]-2);
  ReadInfo[6]=CRC16b(&ReadInfo[0],ReadInfo[0]-2)>>8;
  ComPort1->Write(ReadInfo,sizeof(ReadInfo)) ;
- Button3->Enabled=false;
- TimerTimeout->Enabled=true;
+
  }
    else
- ShowMessage("Для получения инорфмации выберите счетчик !");
+ ShowMessage("Для получения инорфмации выберите счетчик !");    */
+  Button3->Enabled=false;
+  SendData(0x00,0x00,GetCurrentNA());
 
- // new_paket=true;
-// Timer1->Enabled=true;
- //Timer2->Enabled=true;
-// Button3->Enabled=false;
-//ComPort1->Close();
+ //TimerTimeout->Enabled=true;
 
 
 }
@@ -232,16 +231,24 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
         // ShowMessage("Пакет разобран");
           new_paket = true;
           read_byte=0;
-         Timer1->Enabled=true;
+
          if (Packet_Send)
          {
          Sleep(15);
-         SendData(0x02,Packet_Send+int(days_between),10);
+         SendData(0x02,Packet_Send+int(days_between),GetCurrentNA());
          Packet_Send--;
          if (!Packet_Send)
          DataToGrid=true;
          ProgressBar1->Position= Day-Packet_Send;
          }
+         else
+        {
+         Timer1->Enabled=true;
+        }
+
+       // Form1->Timer1Timer( Sender);
+         //Button3->Enabled=true;
+        ///Timer1Timer(0);
         }
         else
         {
@@ -564,9 +571,10 @@ Button3->Enabled=true; ///
 void __fastcall TForm1::TimerTimeoutTimer(TObject *Sender)
 {
 TimerTimeout->Enabled=false;
+Button3->Enabled=true;
 ShowMessage("Счетчик не отвечает!");
 ComPort1->Close();
-Button3->Enabled=true;
+
 
 }
 //---------------------------------------------------------------------------
@@ -630,7 +638,7 @@ StringGrid1->Cells[8][0]="Сумма";
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
   // ShowMessage(int(days_between));
-   SendData(0x02, int(days_between),10);
+   SendData(0x02, int(days_between),GetCurrentNA());
 
 
 
@@ -657,7 +665,7 @@ return true;
 
 TForm1::SendData(unsigned char i , unsigned char  j, unsigned int k)
 {
-  if (GetCurrentNA())
+  if (GetCurrentNA()== k)
  {
  ReadInfo[1]=GetCurrentNA();
  ReadInfo[2]=GetCurrentNA()>>8;
@@ -671,8 +679,10 @@ TForm1::SendData(unsigned char i , unsigned char  j, unsigned int k)
  TimerTimeout->Enabled=true;
  }
    else
- ShowMessage("Для получения инорфмации выберите счетчик !");       //TODO: Add your source code here
-
+{
+  Button3->Enabled=true;
+  ShowMessage("Для получения инорфмации выберите счетчик !");       //TODO: Add your source code here
+ }
  return true;
  }
 
@@ -758,7 +768,7 @@ Mounth_between = (double)(DayToday - MonthBilling );
     return;
    }
 
-    Mounth_between= Month;
+    Mounth_between= Month+12;
 
    for(int i=0; i< Month; i++)
    {
@@ -767,21 +777,21 @@ Mounth_between = (double)(DayToday - MonthBilling );
 
   }
 
-    if(RadioButton3->Checked)  //if cheked with begin of last year
+    if(RadioButton3->Checked)  //if cheked with two last year
   {
-    Mounth_between= Month;
+    Mounth_between= 24;
    int j=0;
    for(int i=0; i< 24; i++)
    {
 
-     if ((Month-j)==0)
+     if ((Month2-j)==0)
      {
       Year--;
       Month=12 ;
       j=0;
 
      }
-    StringGrid2->Cells[0][24-i]=  EncodeDate(Year, Month-j, 1).DateString() ;
+    StringGrid2->Cells[0][24-i]=  EncodeDate(Year, Month2-j, 1).DateString() ;
     j++;
 
    }
@@ -798,15 +808,15 @@ Mounth_between = (double)(DayToday - MonthBilling );
    ProgressBar1->Position=i;
   // Sleep(100);
 
-  }
+  }  */
 
-  Packet_Send=Day;
+  Packet_Send=Mounth_between;
 //*************open port and send quest****************************************
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
   // ShowMessage(int(days_between));
-   SendData(int(days_between),10);
+  SendData(0x03, int(Mounth_between),GetCurrentNA());
                                     */
 
 }

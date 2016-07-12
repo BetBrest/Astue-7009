@@ -23,6 +23,8 @@ unsigned int Packet_Send=0;
 unsigned char IDP; //  request ID  1-byte
 unsigned char IDR; //  additional  request 1-byte
 
+unsigned char flag_IDP=0; //  IDP=2 -day begin, IDP=3 - month begin
+
 Word  Year, Month, Day;
 double days_between,Mounth_between;
 
@@ -123,7 +125,7 @@ CheckBox21->Checked=false;
    else
  ShowMessage("Для получения инорфмации выберите счетчик !");    */
   Button3->Enabled=false;
-  SendData(0x00,0x00,0x10);
+  SendData(0x00,0x00,GetCurrentNA());
 
  //TimerTimeout->Enabled=true;
 
@@ -230,10 +232,10 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
           new_paket = true;
           read_byte=0;
 
-         if (Packet_Send)
+         if (Packet_Send && flag_IDP==2)
          {
          Sleep(15);
-         SendData(0x02,Packet_Send+int(days_between),10);
+         SendData(0x02,Packet_Send+int(days_between),GetCurrentNA());
          Packet_Send--;
          if (!Packet_Send)
          DataToGrid=true;
@@ -529,6 +531,7 @@ Button3->Enabled=true; ///
  if(DataToGrid==true)
 {
   DataToGrid=false;
+  flag_IDP=0;
   Day--;
   for (int i=0; i<Day; i++)
   {
@@ -631,12 +634,13 @@ StringGrid1->Cells[8][0]="Сумма";
   }
 
   Packet_Send=Day;
+  flag_IDP=2;
 //*************open port and send quest****************************************
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
   // ShowMessage(int(days_between));
-   SendData(0x02, int(days_between),10);
+   SendData(0x02, int(days_between),GetCurrentNA());
 
 
 
@@ -663,7 +667,7 @@ return true;
 
 TForm1::SendData(unsigned char i , unsigned char  j, unsigned int k)
 {
-  if (GetCurrentNA())
+  if (GetCurrentNA()== k)
  {
  ReadInfo[1]=GetCurrentNA();
  ReadInfo[2]=GetCurrentNA()>>8;
@@ -766,7 +770,7 @@ Mounth_between = (double)(DayToday - MonthBilling );
     return;
    }
 
-    Mounth_between= Month;
+    Mounth_between= Month+12;
 
    for(int i=0; i< Month; i++)
    {
@@ -775,21 +779,21 @@ Mounth_between = (double)(DayToday - MonthBilling );
 
   }
 
-    if(RadioButton3->Checked)  //if cheked with begin of last year
+    if(RadioButton3->Checked)  //if cheked with two last year
   {
-    Mounth_between= Month;
+    Mounth_between= 24;
    int j=0;
    for(int i=0; i< 24; i++)
    {
 
-     if ((Month-j)==0)
+     if ((Month2-j)==0)
      {
       Year--;
       Month=12 ;
       j=0;
 
      }
-    StringGrid2->Cells[0][24-i]=  EncodeDate(Year, Month-j, 1).DateString() ;
+    StringGrid2->Cells[0][24-i]=  EncodeDate(Year, Month2-j, 1).DateString() ;
     j++;
 
    }
@@ -806,16 +810,17 @@ Mounth_between = (double)(DayToday - MonthBilling );
    ProgressBar1->Position=i;
   // Sleep(100);
 
-  }
+  }  */
 
-  Packet_Send=Day;
+  Packet_Send=Mounth_between;
+  flag_IDP=4;
 //*************open port and send quest****************************************
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
   // ShowMessage(int(days_between));
-   SendData(int(days_between),10);
-                                    */
+  SendData(0x04, int(Mounth_between),GetCurrentNA());
+
 
 }
 //---------------------------------------------------------------------------
