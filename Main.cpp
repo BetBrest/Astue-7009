@@ -16,14 +16,14 @@ unsigned char ReadInfo[] ={0x07, 0x34, 0x00, 0x00, 0x00, 0xBB, 0xF0 } ;
 bool new_paket=true;  //  read the new package from the port
 bool Ready_to_start=false;//flag counter ready to set the time
 bool DataToGrid=false;
-unsigned int read_byte; // the number of bits read from comport
+unsigned char read_byte; // the number of bits read from comport
 unsigned char work_buffer[256];  //com buffers
 unsigned int Packet_Send=0;
 
 unsigned char IDP; //  request ID  1-byte
 unsigned char IDR; //  additional  request 1-byte
 
-unsigned char flag_IDP=0; //  IDP=2 -day begin, IDP=3 - month begin
+unsigned char flag_IDP=0; //  IDP=2 -day begin, IDP=4 - month begin
 
 Word  Year, Month, Day;
 double days_between,Mounth_between;
@@ -373,7 +373,7 @@ bool TForm1::DecodeInBuffer()
    return true;
 }
 
-unsigned int TForm1::GetCurrentNA()
+unsigned char TForm1::GetCurrentNA()
 {
 unsigned  int  IndexTree;
 IndexTree= TreeView1->Selected->AbsoluteIndex;
@@ -665,7 +665,7 @@ energy_day[i].energy_t4=(work_buffer[25]<<24)+ (work_buffer[26]<<16)+ (work_buff
 return true;
 }
 
-TForm1::SendData(unsigned char i , unsigned char  j, unsigned int k)
+TForm1::SendData(unsigned char i , unsigned char  j, unsigned char k)
 {
   if (GetCurrentNA()== k)
  {

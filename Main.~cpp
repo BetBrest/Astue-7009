@@ -23,7 +23,7 @@ unsigned int Packet_Send=0;
 unsigned char IDP; //  request ID  1-byte
 unsigned char IDR; //  additional  request 1-byte
 
-unsigned char flag_IDP=0; //  IDP=2 -day begin, IDP=3 - month begin
+unsigned char flag_IDP=0; //  IDP=2 -day begin, IDP=4 - month begin
 
 Word  Year, Month, Day;
 double days_between,Mounth_between;
@@ -232,7 +232,7 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
           new_paket = true;
           read_byte=0;
 
-         if (Packet_Send)
+         if (Packet_Send && flag_IDP==2)
          {
          Sleep(15);
          SendData(0x02,Packet_Send+int(days_between),GetCurrentNA());
@@ -531,6 +531,7 @@ Button3->Enabled=true; ///
  if(DataToGrid==true)
 {
   DataToGrid=false;
+  flag_IDP=0;
   Day--;
   for (int i=0; i<Day; i++)
   {
@@ -633,6 +634,7 @@ StringGrid1->Cells[8][0]="Ñóììà";
   }
 
   Packet_Send=Day;
+  flag_IDP=2;
 //*************open port and send quest****************************************
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
@@ -811,13 +813,14 @@ Mounth_between = (double)(DayToday - MonthBilling );
   }  */
 
   Packet_Send=Mounth_between;
+  flag_IDP=4;
 //*************open port and send quest****************************************
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
   // ShowMessage(int(days_between));
-  SendData(0x03, int(Mounth_between),GetCurrentNA());
-                                    */
+  SendData(0x04, int(Mounth_between),GetCurrentNA());
+
 
 }
 //---------------------------------------------------------------------------
