@@ -16,7 +16,7 @@ unsigned char ReadInfo[] ={0x07, 0x34, 0x00, 0x00, 0x00, 0xBB, 0xF0 } ;
 bool new_paket=true;  //  read the new package from the port
 bool Ready_to_start=false;//flag counter ready to set the time
 bool DataToGrid=false;
-unsigned int read_byte; // the number of bits read from comport
+unsigned char read_byte; // the number of bits read from comport
 unsigned char work_buffer[256];  //com buffers
 unsigned int Packet_Send=0;
 
@@ -27,6 +27,7 @@ unsigned char flag_IDP=0; //  IDP=2 -day begin, IDP=4 - month begin
 
 Word  Year, Month, Day;
 double days_between,Mounth_between;
+unsigned char Month_Offset=0;
 
 TIniFile *Ini = new TIniFile( dir + "/meters.ini");
 int count_meters=0;
@@ -232,14 +233,30 @@ void __fastcall TForm1::ComPort1RxChar(TObject *Sender, int Count)
           new_paket = true;
           read_byte=0;
 
-         if (Packet_Send && flag_IDP==2)
+         if (Packet_Send  )
          {
-         Sleep(15);
-         SendData(0x02,Packet_Send+int(days_between),GetCurrentNA());
-         Packet_Send--;
-         if (!Packet_Send)
-         DataToGrid=true;
-         ProgressBar1->Position= Day-Packet_Send;
+          if(flag_IDP==2)
+          {
+          Sleep(50);
+          SendData(0x02,Packet_Send+int(days_between),GetCurrentNA());
+          Packet_Send--;
+          if (!Packet_Send)
+          DataToGrid=true;
+          ProgressBar1->Position= Day-Packet_Send;
+          }
+
+          if(flag_IDP==4)
+           {
+          Sleep(50);
+          SendData(0x04,Packet_Send+Month_Offset,GetCurrentNA());
+          Packet_Send--;
+          if (!Packet_Send) ;
+         // DataToGrid=true;
+         // ProgressBar1->Position= Day-Packet_Send;
+          }
+
+
+
          }
          else
         {
@@ -352,16 +369,30 @@ bool TForm1::DecodeInBuffer()
       if(!Energy_begining_day(IDR-int(days_between)))
       return false;
     }
-      else
-      {
-      ShowMessage("Неизвестный дополнительный идентефикатор пакета!");
-      return false;
-      }
-
-
-
+    else
+    {
+     ShowMessage("Неизвестный дополнительный идентефикатор пакета!Больше 93" );
+     return false;
+    }
      break;
   }
+
+  case 5:  // energy reading at the beginning of the day
+  {
+    if (IDR < 24 )
+    {
+      if(!Energy_begining_month(IDR-Month_Offset))
+      return false;
+    }
+    else
+    {
+     ShowMessage("Неизвестный дополнительный идентефикатор пакета!Больше 24");
+     return false;
+    }
+     break;
+  }
+
+
   default:
   {
    ShowMessage("Неизвестный идентефикатор пакета!");
@@ -373,7 +404,7 @@ bool TForm1::DecodeInBuffer()
    return true;
 }
 
-unsigned int TForm1::GetCurrentNA()
+unsigned char TForm1::GetCurrentNA()
 {
 unsigned  int  IndexTree;
 IndexTree= TreeView1->Selected->AbsoluteIndex;
@@ -552,17 +583,7 @@ Button3->Enabled=true; ///
     StringGrid1->Cells[8][Day+2]=FloatToStrF(sum_money, ffFixed,10,0)  ;
     ProgressBar1->Position=0;
 
-
-
-
 }
-
-
-
-
-
-
-
 
 }
 //---------------------------------------------------------------------------
@@ -665,7 +686,7 @@ energy_day[i].energy_t4=(work_buffer[25]<<24)+ (work_buffer[26]<<16)+ (work_buff
 return true;
 }
 
-TForm1::SendData(unsigned char i , unsigned char  j, unsigned int k)
+TForm1::SendData(unsigned char i , unsigned char  j, unsigned char k)
 {
   if (GetCurrentNA()== k)
  {
@@ -755,6 +776,7 @@ Mounth_between = (double)(DayToday - MonthBilling );
   }
 
    Mounth_between= Month;
+   Month_Offset=0;
 
    for(int i=0; i< Month; i++)
    {
@@ -770,7 +792,8 @@ Mounth_between = (double)(DayToday - MonthBilling );
     return;
    }
 
-    Mounth_between= Month+12;
+    Mounth_between= Month;
+    Month_Offset=12;
 
    for(int i=0; i< Month; i++)
    {
@@ -782,6 +805,7 @@ Mounth_between = (double)(DayToday - MonthBilling );
     if(RadioButton3->Checked)  //if cheked with two last year
   {
     Mounth_between= 24;
+    Month_Offset=0;
    int j=0;
    for(int i=0; i< 24; i++)
    {
@@ -818,11 +842,27 @@ Mounth_between = (double)(DayToday - MonthBilling );
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
-  // ShowMessage(int(days_between));
-  SendData(0x04, int(Mounth_between),GetCurrentNA());
+  SendData(0x04, Month_Offset,GetCurrentNA());
 
 
 }
 //---------------------------------------------------------------------------
 
+
+
+bool TForm1::Energy_begining_month(unsigned char i)
+{
+  //****************Read transformation coefficients****************************
+energy_month[i].kttv= (work_buffer[5]<<8)+ work_buffer[6];
+energy_month[i].kttc= (work_buffer[7]<<8)+ work_buffer[8];
+//****************Read Total Energy*******************************************
+energy_month[i].energy_t=(work_buffer[9]<<24)+ (work_buffer[10]<<16)+ (work_buffer[11]<<8)+ work_buffer[12];
+energy_month[i].energy_t1=(work_buffer[13]<<24)+ (work_buffer[14]<<16)+ (work_buffer[15]<<8)+ work_buffer[16];
+energy_month[i].energy_t2=(work_buffer[17]<<24)+ (work_buffer[18]<<16)+ (work_buffer[19]<<8)+ work_buffer[20];
+energy_month[i].energy_t3=(work_buffer[21]<<24)+ (work_buffer[22]<<16)+ (work_buffer[23]<<8)+ work_buffer[24];
+energy_month[i].energy_t4=(work_buffer[25]<<24)+ (work_buffer[26]<<16)+ (work_buffer[27]<<8)+ work_buffer[28];
+
+// ShowMessage(Energy_T);
+return true;
+}
 

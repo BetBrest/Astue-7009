@@ -108,7 +108,6 @@ __published:	// IDE-managed Components
         TCheckBox *CheckBox12;
         TButton *Button1;
         TStringGrid *StringGrid1;
-        TProgressBar *ProgressBar1;
         TEdit *Edit2;
         TLabel *Label3;
         TStringGrid *StringGrid2;
@@ -119,6 +118,7 @@ __published:	// IDE-managed Components
         TRadioButton *RadioButton1;
         TRadioButton *RadioButton2;
         TRadioButton *RadioButton3;
+        TProgressBar *ProgressBar1;
         void __fastcall N4Click(TObject *Sender);
         void __fastcall TreeView1Click(TObject *Sender);
         void __fastcall N6Click(TObject *Sender);
@@ -177,7 +177,7 @@ struct Energy_Day
  int energy_t3;
  int energy_t4;
 
-} energy_day[32];
+} energy_day[32],energy_month[25];
 // My_Meter;//={{{52,0x00},2,{0x01,0},{0x01,0},{0x02,0}},
                    // {{76,0x00},2,{0x01,0},{0x01,0},{0x03,0}}};
 
@@ -190,7 +190,8 @@ struct Energy_Day
         unsigned char GetCurrentNA();
         bool __fastcall ReadSysPar();                         //   true - if decode is right, else - false
         bool __fastcall Energy_begining_day(unsigned char);     //   true - if decode is right, else - false
-        SendData(unsigned char, unsigned char, unsigned char);   // IDP, IDR,NET_ADRESS
+        SendData(unsigned char, unsigned char, unsigned char);
+        bool Energy_begining_month(unsigned char);   // IDP, IDR,NET_ADRESS
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

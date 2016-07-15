@@ -1,10 +1,10 @@
 object Form1: TForm1
-  Left = 323
+  Left = 353
   Top = 123
   BorderStyle = bsSingle
   Caption = #1055#1088#1086#1075#1088#1072#1084#1084#1072' '#1090#1077#1093#1085#1080#1095#1077#1089#1082#1086#1075#1086' '#1091#1095#1077#1090#1072' '#1088#1072#1089#1093#1086#1076#1072' '#1101#1083#1077#1082#1090#1088#1086#1101#1085#1077#1088#1075#1080#1080
   ClientHeight = 635
-  ClientWidth = 1127
+  ClientWidth = 1097
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -89,21 +89,12 @@ object Form1: TForm1
           100
           104)
       end
-      object ProgressBar1: TProgressBar
-        Left = 16
-        Top = 450
-        Width = 673
-        Height = 17
-        Min = 0
-        Max = 100
-        TabOrder = 2
-      end
       object Edit2: TEdit
         Left = 632
         Top = 0
         Width = 121
         Height = 21
-        TabOrder = 3
+        TabOrder = 2
         Text = '1820'
       end
     end
@@ -124,9 +115,9 @@ object Form1: TForm1
           80
           88
           80
-          80
-          80
-          80
+          73
+          73
+          70
           80
           80
           80)
@@ -512,6 +503,15 @@ object Form1: TForm1
     Lines.Strings = (
       'RichEdit1')
     TabOrder = 4
+  end
+  object ProgressBar1: TProgressBar
+    Left = 248
+    Top = 560
+    Width = 793
+    Height = 17
+    Min = 0
+    Max = 100
+    TabOrder = 5
   end
   object MainMenu1: TMainMenu
     Left = 16
