@@ -589,7 +589,7 @@ Button3->Enabled=true; ///
   DataToGrid2=false;
   flag_IDP=0;
 
-  for (int i=0; i<(months_between-Month_Offset); i++)
+  for (int i=0; i<(months_between); i++)
   {
     StringGrid2->Cells[1][months_between-i]= float(energy_month[i].energy_t)/10000;
     StringGrid2->Cells[2][months_between-i]= float(energy_month[i].energy_t1)/10000;
@@ -713,7 +713,7 @@ return true;
 
 TForm1::SendData(unsigned char i , unsigned char  j, unsigned char k)
 {
-  if (GetCurrentNA()== k)
+  if (k)
  {
  ReadInfo[1]=GetCurrentNA();
  ReadInfo[2]=GetCurrentNA()>>8;
@@ -735,7 +735,7 @@ TForm1::SendData(unsigned char i , unsigned char  j, unsigned char k)
  }
 
 
-void __fastcall TForm1::Button6Click(TObject *Sender)
+void __fastcall TForm1::Button6Click(TObject *Sender) // get graphic
 {
 
 Series1->Clear();
@@ -818,7 +818,7 @@ months_between = (double)(DayToday - MonthBilling );
    }
 
     months_between= Month;
-    Month_Offset=12;
+    Month_Offset=Month2;
 
    for(int i=0; i< Month; i++)
    {
@@ -829,31 +829,32 @@ months_between = (double)(DayToday - MonthBilling );
 
     if(RadioButton3->Checked)  //if cheked with two last year
   {
-    months_between= 24;
+    months_between= 23;
     Month_Offset=0;
    int j=0;
-   for(int i=0; i< 24; i++)
+   for(int i=0; i< 23; i++)
    {
 
      if ((Month2-j)==0)
      {
       Year--;
-      Month=12 ;
+      Month2=12 ;
       j=0;
 
      }
-    StringGrid2->Cells[0][24-i]=  EncodeDate(Year, Month2-j, 1).DateString() ;
+    StringGrid2->Cells[0][23-i]=  EncodeDate(Year, Month2-j, 1).DateString() ;
     j++;
 
    }
 
   }
 
-
   ProgressBar1->Max= months_between;
   Packet_Send=months_between;
   flag_IDP=4;
 //*************open port and send quest****************************************
+
+ //
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
