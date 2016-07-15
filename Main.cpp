@@ -21,6 +21,8 @@ unsigned char read_byte; // the number of bits read from comport
 unsigned char work_buffer[256];  //com buffers
 unsigned int Packet_Send=0;
 
+unsigned char CountInGroup=0;
+
 unsigned char IDP; //  request ID  1-byte
 unsigned char IDR; //  additional  request 1-byte
 
@@ -109,23 +111,7 @@ CheckBox21->Checked=false;
   dir = GetCurrentDir();
   ComPort1->LoadSettings(stIniFile, dir + "\\PortSettings.ini");
   ComPort1->Open();
- //ComPort1->Write("00",1) ;
-//*************add NEt Adress to packet*****************************************
 
- /*if (GetCurrentNA())
- {
- ReadInfo[1]=GetCurrentNA();
- ReadInfo[2]=GetCurrentNA()>>8;
- ReadInfo[3]=0x00;
- ReadInfo[4]=0x00;
- //*************add CRC to packet*****************************************
- ReadInfo[5]=CRC16b(&ReadInfo[0],ReadInfo[0]-2);
- ReadInfo[6]=CRC16b(&ReadInfo[0],ReadInfo[0]-2)>>8;
- ComPort1->Write(ReadInfo,sizeof(ReadInfo)) ;
-
- }
-   else
- ShowMessage("Для получения инорфмации выберите счетчик !");    */
   Button3->Enabled=false;
   SendData(0x00,0x00,GetCurrentNA());
 
@@ -632,6 +618,32 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
 TDateTime DayBilling, DayToday=Now();
 
 Word  Year2, Month2, Day2;
+ CountInGroup=0;
+
+//***************if group index**************************
+
+ if (TreeView1->Selected->Level==1)
+ {
+   TreeView1->Items->Item[TreeView1->Selected->AbsoluteIndex +1]->Selected=true; // go to first child
+
+   while(TreeView1->Selected->Level==2)
+   {
+    if(TreeView1->Items->Count ==(TreeView1->Selected->AbsoluteIndex +1))
+    {
+    CountInGroup++;
+     break;
+     }
+    TreeView1->Items->Item[TreeView1->Selected->AbsoluteIndex +1]->Selected=true;
+
+    CountInGroup++;
+   }
+
+     ShowMessage(CountInGroup);
+
+
+   return;
+ }
+
 
 ProgressBar1->Position=0;
 //***************Get a date and chek it**************************
